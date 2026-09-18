@@ -2,11 +2,11 @@ function About() {
   const infoRows = [
     { label: 'Location:', value: 'Nigeria' },
     { label: 'Experience:', value: '3+ Years (Since 2023)' },
-    { label: 'Core Expertise:', value: 'Frontend & BaaS' },
+    { label: 'Core Expertise:', value: 'Frontend & Backend Dev' },
     { label: 'Specialty:', value: 'Responsive Web Apps' },
   ]
 
-  const badges = ['Responsive-First', 'Clean Architecture', 'Firebase Integration']
+  const badges = ['Responsive-First', 'Clean Architecture', 'Full-Stack Capable', 'Firebase Integration']
 
   return (
     <section id="about" className="py-24 bg-slate-50 dark:bg-dark-bg">
@@ -57,7 +57,7 @@ function About() {
               I build real-world websites and web applications with a strong emphasis on clean code, responsive layouts, performance optimization, and robust accessibility. Whether it's crafting educational platforms like Al-Fardyeen Academy, data services like ADITECHDATA, or e-commerce and banking apps, I approach every project with meticulous attention to detail.
             </p>
             <p>
-              My technical toolkit spans modern HTML5, CSS3, JavaScript, and React, coupled with backend-as-a-service (BaaS) integration via Firebase for authentication, database management, and hosting. I believe in continuous learning, structured problem-solving, and building digital products that genuinely solve user problems.
+              My technical toolkit spans modern HTML5, CSS3, JavaScript, and React on the frontend, paired with Node.js, Express, Next.js API routes, and PHP on the backend — plus backend-as-a-service (BaaS) integration via Firebase for authentication, database management, and hosting. I believe in continuous learning, structured problem-solving, and building digital products that genuinely solve user problems.
             </p>
 
             <div className="pt-4 flex flex-wrap gap-4">

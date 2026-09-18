@@ -9,7 +9,7 @@ export const projects = [
     badgeColor: 'bg-brand-500/20 text-brand-200 border-brand-400/30',
     title: 'Al-Fardyeen Academy',
     description: 'An educational platform focused on Islamic inheritance studies featuring structured lessons, student progress tracking, and interactive quizzes.',
-    tags: ['HTML5', 'CSS3', 'JavaScript', 'Firebase'],
+    tags: ['HTML5', 'CSS3', 'JavaScript', 'React', 'Firebase'],
     liveUrl: 'https://alfardyeenacademy.vercel.app/',
   },
   {
@@ -22,7 +22,7 @@ export const projects = [
     badgeColor: 'bg-emerald-500/20 text-emerald-200 border-emerald-400/30',
     title: 'ADITECHDATA',
     description: 'A digital service and data utility platform offering streamlined subscription workflows, automated account processing, and clean interfaces.',
-    tags: ['HTML5', 'Tailwind CSS', 'JavaScript', 'Firebase'],
+    tags: ['HTML5', 'Tailwind CSS', 'JavaScript', 'React', 'Node.js', 'Firebase'],
     liveUrl: 'https://aditechdata.com.ng/',
   },
   {
@@ -35,7 +35,7 @@ export const projects = [
     badgeColor: 'bg-rose-500/20 text-rose-200 border-rose-400/30',
     title: 'Rukteejay Store',
     description: 'A modern e-commerce project featuring product catalogs, responsive grid layouts, shopping cart interactions, and smooth user checkout experience.',
-    tags: ['HTML5', 'CSS Grid', 'JavaScript'],
+    tags: ['HTML5', 'CSS Grid', 'JavaScript', 'React', 'Node.js'],
     liveUrl: 'https://rukteejay-store.vercel.app/',
   },
   {
@@ -48,7 +48,7 @@ export const projects = [
     badgeColor: 'bg-blue-500/20 text-blue-200 border-blue-400/30',
     title: 'AditechBank',
     description: 'A secure banking web application simulation featuring account dashboards, transaction history logs, fund transfers, and authentication.',
-    tags: ['JavaScript', 'Firebase Auth', 'Firestore'],
+    tags: ['JavaScript', 'React', 'Node.js', 'Firebase Auth', 'Firestore'],
     liveUrl: 'https://aditechbank-for-dual-core-hq-screen.vercel.app/',
   },
   {
@@ -61,7 +61,7 @@ export const projects = [
     badgeColor: 'bg-purple-500/20 text-purple-200 border-purple-400/30',
     title: 'Frontend Assessment Hub',
     description: 'A production-ready frontend assessment project demonstrating advanced DOM manipulation, responsive layouts, modular code structure, and UI precision.',
-    tags: ['HTML5', 'Modular JS', 'Tailwind CSS'],
+    tags: ['HTML5', 'Modular JS', 'React', 'Tailwind CSS'],
     liveUrl: '', // TODO: add your deployed link here, e.g. 'https://your-assessment-project.vercel.app/'
   },
   {

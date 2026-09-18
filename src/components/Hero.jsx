@@ -1,8 +1,10 @@
+import Typewriter from './Typewriter'
+
 function Hero() {
-  const stackTags = ['HTML5', 'CSS3', 'JS', 'React', 'Firebase']
+  const stackTags = ['HTML5', 'CSS3', 'JS', 'React', 'Node.js', 'Firebase']
 
   return (
-    <section id="home" className="relative pt-24 pb-20 md:pt-32 md:pb-32 overflow-hidden">
+    <section id="home" className="relative pt-16 pb-16 md:pt-24 md:pb-28 overflow-hidden">
       <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-brand-500/10 dark:bg-brand-500/5 rounded-full blur-3xl pointer-events-none"></div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
@@ -14,12 +16,15 @@ function Hero() {
               Available for Employment & Freelance Projects
             </div>
 
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-slate-900 dark:text-white leading-[1.1]">
-              Hi, I'm <span className="bg-gradient-to-r from-brand-600 to-indigo-400 bg-clip-text text-transparent">Adisa Nureni Olaniyi</span>
+            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-slate-900 dark:text-white leading-[1.1] min-h-[1.1em] sm:min-h-0">
+              Hi, I'm{' '}
+              <span className="bg-gradient-to-r from-brand-600 to-indigo-400 bg-clip-text text-transparent">
+                <Typewriter words={['Adisa Nureni O.', 'a Full Stack Developer']} />
+              </span>
             </h1>
 
             <p className="text-xl sm:text-2xl font-semibold text-slate-700 dark:text-slate-300">
-              Frontend Developer building modern digital experiences.
+              Frontend & Backend Developer building modern digital experiences.
             </p>
 
             <p className="text-base sm:text-lg text-slate-600 dark:text-dark-muted max-w-2xl mx-auto lg:mx-0 leading-relaxed">
@@ -72,7 +77,7 @@ function Hero() {
                   <p><span className="text-purple-400">const</span> <span className="text-blue-400">developer</span> = {'{'}</p>
                   <p className="pl-4"><span className="text-emerald-400">name</span>: <span className="text-amber-300">"Adisa Nureni Olaniyi"</span>,</p>
                   <p className="pl-4"><span className="text-emerald-400">brand</span>: <span className="text-amber-300">"Dev Aditech"</span>,</p>
-                  <p className="pl-4"><span className="text-emerald-400">role</span>: <span className="text-amber-300">"Frontend / Web Developer"</span>,</p>
+                  <p className="pl-4"><span className="text-emerald-400">role</span>: <span className="text-amber-300">"Frontend / Backend Web Developer"</span>,</p>
                   <p className="pl-4"><span className="text-emerald-400">experience</span>: <span className="text-purple-400">"3+ Years"</span>,</p>
                   <p className="pl-4"><span className="text-emerald-400">started</span>: <span className="text-orange-400">2023</span>,</p>
                   <p className="pl-4">

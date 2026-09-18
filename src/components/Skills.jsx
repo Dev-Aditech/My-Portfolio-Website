@@ -11,8 +11,8 @@ function Skills() {
       icon: 'fa-database',
       iconBg: 'bg-amber-500/10 text-amber-600 dark:text-amber-400',
       title: 'Backend & BaaS',
-      description: 'Integrating cloud databases, user authentication, and secure hosting.',
-      tags: ['Firebase', 'Firestore', 'Firebase Auth', 'Firebase Storage', 'Firebase Hosting'],
+      description: 'Building server-side logic and integrating cloud databases, authentication, and secure hosting.',
+      tags: ['Node.js', 'Express', 'Next.js', 'PHP', 'Firebase', 'Firestore', 'Firebase Auth', 'Firebase Storage', 'Firebase Hosting'],
     },
     {
       icon: 'fa-toolbox',
