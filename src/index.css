@@ -1,23 +1,10 @@
 @import "tailwindcss";
 
 body {
-  background-color: #f8fafc; /* bg-slate-50 */
-  color: #1e293b; /* text-slate-800 */
-  font-family: var(--font-sans);
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  transition-property: color, background-color;
-  transition-duration: 300ms;
-  transition-timing-function: ease;
+  @apply bg-slate-50 text-slate-800 dark:bg-dark-bg dark:text-slate-100 font-sans antialiased transition-colors duration-300;
 }
 
-/* dark mode overrides (replaces dark: utilities) */
-.dark body {
-  background-color: var(--color-dark-bg);
-  color: #f1f5f9; /* approximate slate-100 */
-}
-
-:root {
+@theme {
   --color-brand-50: #eef2ff;
   --color-brand-100: #e0e7ff;
   --color-brand-500: #6366f1;
@@ -48,6 +35,8 @@ body {
   0%, 100% { transform: translateY(0px); }
   50% { transform: translateY(-10px); }
 }
+
+@custom-variant dark (&:where(.dark, .dark *));
 
 ::-webkit-scrollbar { width: 8px; }
 ::-webkit-scrollbar-track { background: transparent; }
