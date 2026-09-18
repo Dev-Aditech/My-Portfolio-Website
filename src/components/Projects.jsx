@@ -17,6 +17,8 @@ function Projects() {
     ? projects
     : projects.filter((project) => project.category === activeFilter)
 
+  const getScreenshotUrl = (liveUrl) => `https://image.thum.io/get/width/800/crop/500/noanimate/${liveUrl}`
+
   return (
     <section id="projects" className="py-24 bg-slate-50 dark:bg-dark-bg">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -45,13 +47,27 @@ function Projects() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {visibleProjects.map((project) => (
             <div key={project.id} className="project-card rounded-3xl bg-white dark:bg-dark-card border border-slate-200 dark:border-dark-border overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col group">
-              <div className={`h-48 bg-gradient-to-tr ${project.gradient} relative overflow-hidden p-6 flex flex-col justify-between`}>
+              <div className="h-48 relative overflow-hidden">
+                <div className={`absolute inset-0 bg-gradient-to-tr ${project.gradient}`}></div>
+
+                {project.liveUrl && (
+                  <img
+                    src={getScreenshotUrl(project.liveUrl)}
+                    alt={`${project.title} preview`}
+                    loading="lazy"
+                    className="absolute inset-0 w-full h-full object-cover object-top"
+                    onError={(e) => { e.target.style.display = 'none' }}
+                  />
+                )}
+
                 <div className="absolute inset-0 bg-[radial-gradient(#ffffff15_1px,transparent_1px)] [background-size:16px_16px] opacity-30"></div>
-                <div className="flex justify-between items-center relative z-10">
-                  <span className={`px-3 py-1 rounded-full text-[11px] font-mono border ${project.badgeColor}`}>{project.badge}</span>
-                  <span className="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center text-white"><i className={`fa-solid ${project.icon}`}></i></span>
-                </div>
-                <div className="relative z-10">
+                <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/10 to-transparent"></div>
+
+                <div className="relative z-10 h-full flex flex-col justify-between p-6">
+                  <div className="flex justify-between items-center">
+                    <span className={`px-3 py-1 rounded-full text-[11px] font-mono border ${project.badgeColor}`}>{project.badge}</span>
+                    <span className="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center text-white"><i className={`fa-solid ${project.icon}`}></i></span>
+                  </div>
                   <h3 className={`text-xl font-bold text-white transition-colors ${project.accentText}`}>{project.title}</h3>
                 </div>
               </div>
@@ -72,9 +88,11 @@ function Projects() {
                       <a href="https://github.com/Nureni-2023" target="_blank" rel="noopener noreferrer" aria-label="GitHub Repository" className="text-slate-500 hover:text-slate-900 dark:hover:text-white transition-colors">
                         <i className="fa-brands fa-github text-base"></i>
                       </a>
-                      <a href="https://nureni-2023.github.io/ADISA-NURENI-PORTFOLIO-WEBSITE/" target="_blank" rel="noopener noreferrer" aria-label="Live Demo" className="text-slate-500 hover:text-brand-600 transition-colors">
-                        <i className="fa-solid fa-external-link text-base"></i>
-                      </a>
+                      {project.liveUrl && (
+                        <a href={project.liveUrl} target="_blank" rel="noopener noreferrer" aria-label="Live Demo" className="text-slate-500 hover:text-brand-600 transition-colors">
+                          <i className="fa-solid fa-external-link text-base"></i>
+                        </a>
+                      )}
                     </div>
                   </div>
                 </div>

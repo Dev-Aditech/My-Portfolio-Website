@@ -10,6 +10,7 @@ export const projects = [
     title: 'Al-Fardyeen Academy',
     description: 'An educational platform focused on Islamic inheritance studies featuring structured lessons, student progress tracking, and interactive quizzes.',
     tags: ['HTML5', 'CSS3', 'JavaScript', 'Firebase'],
+    liveUrl: 'https://alfardyeenacademy.vercel.app/',
   },
   {
     id: 'aditechdata',
@@ -22,6 +23,7 @@ export const projects = [
     title: 'ADITECHDATA',
     description: 'A digital service and data utility platform offering streamlined subscription workflows, automated account processing, and clean interfaces.',
     tags: ['HTML5', 'Tailwind CSS', 'JavaScript', 'Firebase'],
+    liveUrl: 'https://aditechdata.com.ng/',
   },
   {
     id: 'rukteejay',
@@ -34,6 +36,7 @@ export const projects = [
     title: 'Rukteejay Store',
     description: 'A modern e-commerce project featuring product catalogs, responsive grid layouts, shopping cart interactions, and smooth user checkout experience.',
     tags: ['HTML5', 'CSS Grid', 'JavaScript'],
+    liveUrl: 'https://rukteejay-store.vercel.app/',
   },
   {
     id: 'aditechbank',
@@ -46,6 +49,7 @@ export const projects = [
     title: 'AditechBank',
     description: 'A secure banking web application simulation featuring account dashboards, transaction history logs, fund transfers, and authentication.',
     tags: ['JavaScript', 'Firebase Auth', 'Firestore'],
+    liveUrl: 'https://aditechbank-for-dual-core-hq-screen.vercel.app/',
   },
   {
     id: 'assessment',
@@ -58,6 +62,20 @@ export const projects = [
     title: 'Frontend Assessment Hub',
     description: 'A production-ready frontend assessment project demonstrating advanced DOM manipulation, responsive layouts, modular code structure, and UI precision.',
     tags: ['HTML5', 'Modular JS', 'Tailwind CSS'],
+    liveUrl: '', // TODO: add your deployed link here, e.g. 'https://your-assessment-project.vercel.app/'
+  },
+  {
+    id: 'personalPortfolio',
+    category: 'frontend',
+    badge: 'Personal Portfolio',
+    icon: 'fa-user',
+    gradient: 'from-slate-900 to-slate-700',
+    accentText: 'group-hover:text-slate-300',
+    badgeColor: 'bg-slate-500/20 text-slate-200 border-slate-400/30',
+    title: 'My Personal Portfolio',
+    description: 'This very site — originally built with HTML, Tailwind, and vanilla JavaScript, then rebuilt from scratch as a component-based React application using Vite.',
+    tags: ['React', 'Tailwind CSS', 'Vite'],
+    liveUrl: 'https://adisanureni.vercel.app/',
   },
 ]
 
@@ -116,5 +134,16 @@ export const caseStudies = {
     tech: ['HTML5', 'Modular JS', 'Tailwind CSS'],
     challenges: 'Ensuring complete cross-browser compatibility and strict adherence to semantic HTML heading hierarchies.',
     learned: 'Reinforced enterprise-grade frontend standards, code readability, and performance optimization.',
+  },
+  personalPortfolio: {
+    title: 'My Personal Portfolio',
+    category: 'Personal Portfolio',
+    overview: 'My own developer portfolio, showcasing my projects, skills, and experience — rebuilt as a modern React application after starting as a static HTML/Tailwind site.',
+    problem: 'The original site was a single large HTML file with all logic in inline scripts, making it harder to extend, reuse, or maintain as more sections and features were added.',
+    solution: 'Rebuilt the entire site as a component-based React application using Vite, splitting the page into reusable components with clear props and state, and moving content into dedicated data files.',
+    features: ['Component-Based Architecture', 'Dark/Light Theme Toggle', 'Filterable Project Showcase', 'Interactive Case Study Modals'],
+    tech: ['React', 'Vite', 'Tailwind CSS'],
+    challenges: 'Learning React fundamentals (components, props, state, effects) while converting real, already-designed markup rather than starting from a tutorial.',
+    learned: 'Gained hands-on experience with React state management, component composition, and structuring a real-world frontend project from scratch.',
   },
 }
