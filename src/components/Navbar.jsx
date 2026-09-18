@@ -1,7 +1,14 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
 function Navbar({ isDark, toggleTheme }) {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+  const [isScrolled, setIsScrolled] = useState(false)
+
+  useEffect(() => {
+    const handleScroll = () => setIsScrolled(window.scrollY > 40)
+    window.addEventListener('scroll', handleScroll)
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [])
 
   const navLinks = [
     { name: 'Home', href: '#home' },
@@ -14,15 +21,15 @@ function Navbar({ isDark, toggleTheme }) {
   ]
 
   return (
-    <header id="navbar" className="fixed top-0 left-0 right-0 z-40 transition-all duration-300 border-b border-transparent bg-white/90 dark:bg-dark-bg/90 backdrop-blur-md">
+    <header id="navbar" className={`fixed top-0 left-0 right-0 z-40 transition-all duration-300 border-b ${isScrolled ? 'glass-panel shadow-sm border-slate-200/60 dark:border-dark-border' : 'border-transparent'}`}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
 
         <a href="#home" className="group flex items-center gap-3 focus:outline-none focus:ring-2 focus:ring-brand-500 rounded-lg p-1">
-          <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-brand-600 to-indigo-400 flex items-center justify-center text-white font-bold shadow-lg shadow-brand-500/20 group-hover:scale-105 transition-transform">
+          <div className="w-10 h-10 rounded-xl bg-linear-to-tr from-brand-600 to-indigo-400 flex items-center justify-center text-white font-bold shadow-lg shadow-brand-500/20 group-hover:scale-105 transition-transform">
             DA
           </div>
           <div>
-            <span className="font-extrabold text-lg tracking-tight bg-gradient-to-r from-slate-900 to-slate-700 dark:from-white dark:to-slate-300 bg-clip-text text-transparent">Dev Aditech</span>
+            <span className="font-extrabold text-lg tracking-tight bg-linear-to-r from-slate-900 to-slate-700 dark:from-white dark:to-slate-300 bg-clip-text text-transparent">Dev Aditech</span>
             <span className="block text-xs font-mono text-slate-500 dark:text-dark-muted">Adisa Nureni O.</span>
           </div>
         </a>

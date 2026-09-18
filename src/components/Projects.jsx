@@ -48,7 +48,7 @@ function Projects() {
           {visibleProjects.map((project) => (
             <div key={project.id} className="project-card rounded-3xl bg-white dark:bg-dark-card border border-slate-200 dark:border-dark-border overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col group">
               <div className="h-48 relative overflow-hidden">
-                <div className={`absolute inset-0 bg-gradient-to-tr ${project.gradient}`}></div>
+                <div className={`absolute inset-0 bg-linear-to-tr ${project.gradient}`}></div>
 
                 {project.liveUrl && (
                   <img
@@ -60,8 +60,8 @@ function Projects() {
                   />
                 )}
 
-                <div className="absolute inset-0 bg-[radial-gradient(#ffffff15_1px,transparent_1px)] [background-size:16px_16px] opacity-30"></div>
-                <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/10 to-transparent"></div>
+                <div className="absolute inset-0 bg-[radial-gradient(#ffffff15_1px,transparent_1px)] bg-size-[16px_16px] opacity-30"></div>
+                <div className="absolute inset-0 bg-linear-to-t from-black/75 via-black/10 to-transparent"></div>
 
                 <div className="relative z-10 h-full flex flex-col justify-between p-6">
                   <div className="flex justify-between items-center">

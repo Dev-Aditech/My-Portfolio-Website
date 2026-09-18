@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import Navbar from './components/Navbar'
+import ScrollProgress from './components/ScrollProgress'
 import Hero from './components/Hero'
 import Stats from './components/Stats'
 import About from './components/About'
@@ -31,6 +32,7 @@ function App() {
 
   return (
     <>
+      <ScrollProgress />
       <Navbar isDark={isDark} toggleTheme={toggleTheme} />
       <Hero />
       <Stats />

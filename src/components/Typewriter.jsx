@@ -14,8 +14,10 @@ function Typewriter({ words, typingSpeed = 90, deletingSpeed = 45, pauseTime = 1
       timeout = setTimeout(() => setIsDeleting(true), pauseTime)
     } else if (isDeleting && text === '') {
       // Finished deleting — move on to the next word
-      setIsDeleting(false)
-      setWordIndex((prev) => (prev + 1) % words.length)
+      timeout = setTimeout(() => {
+        setIsDeleting(false)
+        setWordIndex((prev) => (prev + 1) % words.length)
+      }, 0)
     } else {
       // Either typing forward or deleting backward, one character at a time
       const nextText = isDeleting
@@ -31,7 +33,7 @@ function Typewriter({ words, typingSpeed = 90, deletingSpeed = 45, pauseTime = 1
   return (
     <span>
       {text}
-      <span className="inline-block `w-0.73` h-[0.9em] bg-current ml-1 align-middle animate-pulse"></span>
+      <span className="inline-block `w-0.75` h-[0.9em] bg-current ml-1 align-middle animate-pulse"></span>
     </span>
   )
 }

@@ -20,10 +20,10 @@ function About() {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
           <div className="lg:col-span-5">
             <div className="relative">
-              <div className="absolute -inset-2 bg-gradient-to-tr from-brand-600 to-indigo-400 rounded-3xl opacity-20 blur-xl"></div>
+              <div className="absolute -inset-2 bg-linear-to-tr from-brand-600 to-indigo-400 rounded-3xl opacity-20 blur-xl"></div>
               <div className="relative rounded-3xl bg-white dark:bg-dark-card p-8 border border-slate-200 dark:border-dark-border shadow-xl space-y-6">
                 <div className="flex items-center gap-4">
-                  <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-brand-600 to-indigo-600 flex items-center justify-center text-white text-2xl font-bold shadow-md">
+                  <div className="w-16 h-16 rounded-2xl bg-linear-to-br from-brand-600 to-indigo-600 flex items-center justify-center text-white text-2xl font-bold shadow-md">
                     DA
                   </div>
                   <div>

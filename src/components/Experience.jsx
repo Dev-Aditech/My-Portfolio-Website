@@ -47,7 +47,7 @@ function Experience() {
           <div className="relative border-l-2 border-slate-200 dark:border-dark-border pl-6 sm:pl-8 space-y-12">
             {timeline.map((item) => (
               <div key={item.role} className="relative">
-                <div className={`absolute -left-[35px] sm:-left-[41px] top-0 w-6 h-6 rounded-full ${item.dotColor} border-4 border-slate-50 dark:border-dark-bg`}></div>
+                <div className={`absolute -left-8.75 sm:-left-10.25 top-0 w-6 h-6 rounded-full ${item.dotColor} border-4 border-slate-50 dark:border-dark-bg`}></div>
                 <div className="p-6 rounded-3xl bg-white dark:bg-dark-card border border-slate-200 dark:border-dark-border shadow-sm space-y-3">
                   <div className="flex flex-wrap items-center justify-between gap-2">
                     <h3 className="text-lg font-bold text-slate-900 dark:text-white">{item.role}</h3>
