@@ -11,6 +11,7 @@ export const projects = [
     description: 'An educational platform focused on Islamic inheritance studies featuring structured lessons, student progress tracking, and interactive quizzes.',
     tags: ['HTML5', 'CSS3', 'JavaScript', 'React', 'Firebase'],
     liveUrl: 'https://alfardyeenacademy.vercel.app/',
+    githubUrl: 'https://github.com/Dev-Aditech',
   },
   {
     id: 'aditechdata',
@@ -24,6 +25,7 @@ export const projects = [
     description: 'A digital service and data utility platform offering streamlined subscription workflows, automated account processing, and clean interfaces.',
     tags: ['HTML5', 'Tailwind CSS', 'JavaScript', 'React', 'Node.js', 'Firebase'],
     liveUrl: 'https://aditechdata.com.ng/',
+    githubUrl: 'https://github.com/Dev-Aditech',
   },
   {
     id: 'rukteejay',
@@ -37,6 +39,7 @@ export const projects = [
     description: 'A modern e-commerce project featuring product catalogs, responsive grid layouts, shopping cart interactions, and smooth user checkout experience.',
     tags: ['HTML5', 'CSS Grid', 'JavaScript', 'React', 'Node.js'],
     liveUrl: 'https://rukteejay-store.vercel.app/',
+    githubUrl: 'https://github.com/Dev-Aditech',
   },
   {
     id: 'aditechbank',
@@ -50,6 +53,7 @@ export const projects = [
     description: 'A secure banking web application simulation featuring account dashboards, transaction history logs, fund transfers, and authentication.',
     tags: ['JavaScript', 'React', 'Node.js', 'Firebase Auth', 'Firestore'],
     liveUrl: 'https://aditechbank-for-dual-core-hq-screen.vercel.app/',
+    githubUrl: 'https://github.com/Dev-Aditech',
   },
   {
     id: 'assessment',
@@ -63,6 +67,7 @@ export const projects = [
     description: 'A production-ready frontend assessment project demonstrating advanced DOM manipulation, responsive layouts, modular code structure, and UI precision.',
     tags: ['HTML5', 'Modular JS', 'React', 'Tailwind CSS'],
     liveUrl: '', // TODO: add your deployed link here, e.g. 'https://your-assessment-project.vercel.app/'
+    githubUrl: 'https://github.com/Dev-Aditech',
   },
   {
     id: 'personalPortfolio',
@@ -76,6 +81,7 @@ export const projects = [
     description: 'This very site — originally built with HTML, Tailwind, and vanilla JavaScript, then rebuilt from scratch as a component-based React application using Vite.',
     tags: ['React', 'Tailwind CSS', 'Vite'],
     liveUrl: 'https://adisanureni.vercel.app/',
+    githubUrl: 'https://github.com/Dev-Aditech/My-Portfolio-Website/tree/main',
   },
 ]
 

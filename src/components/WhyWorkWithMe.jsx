@@ -74,7 +74,7 @@ function WhyWorkWithMe() {
             <div className="p-4 rounded-2xl bg-slate-50 dark:bg-dark-surface text-xs font-mono text-left space-y-2">
               <div><strong>Brand:</strong> Dev Aditech</div>
               <div><strong>Location:</strong> Nigeria</div>
-              <div><strong>GitHub:</strong> Nureni-2023</div>
+              <div><strong>GitHub:</strong> Dev-Aditech</div>
               <div><strong>Portfolio:</strong> adisanureni.vercel.app</div>
             </div>
             <div className="flex justify-center gap-4 pt-2">

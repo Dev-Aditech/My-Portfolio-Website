@@ -5,7 +5,7 @@ function Hero() {
 
   return (
     <section id="home" className="relative pt-16 pb-16 md:pt-24 md:pb-28 overflow-hidden">
-      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 `w-150` `h-150` bg-brand-500/10 dark:bg-brand-500/5 rounded-full blur-3xl pointer-events-none"></div>
+      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-150 h-150 bg-brand-500/10 dark:bg-brand-500/5 rounded-full blur-3xl pointer-events-none"></div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
@@ -44,16 +44,16 @@ function Hero() {
 
             <div className="pt-6 flex items-center justify-center lg:justify-start gap-4">
               <span className="text-xs font-mono uppercase tracking-widest text-slate-400 dark:text-dark-muted">Connect:</span>
-              <a href="https://github.com/Nureni-2023" target="_blank" rel="noopener noreferrer" aria-label="GitHub" className="w-10 h-10 rounded-xl bg-slate-200/70 dark:bg-dark-card border border-slate-300/50 dark:border-dark-border flex items-center justify-center text-slate-700 dark:text-slate-300 hover:bg-brand-600 hover:text-white dark:hover:bg-brand-600 transition-all">
+              <a href="https://github.com/Dev-Aditech" target="_blank" rel="noopener noreferrer" aria-label="GitHub" className="w-10 h-10 rounded-xl bg-slate-200/70 dark:bg-dark-card border border-slate-300/50 dark:border-dark-border flex items-center justify-center text-slate-700 dark:text-slate-300 hover:bg-brand-600 hover:text-white dark:hover:bg-brand-600 transition-all">
                 <i className="fa-brands fa-github text-lg"></i>
               </a>
               <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" className="w-10 h-10 rounded-xl bg-slate-200/70 dark:bg-dark-card border border-slate-300/50 dark:border-dark-border flex items-center justify-center text-slate-700 dark:text-slate-300 hover:bg-brand-600 hover:text-white dark:hover:bg-brand-600 transition-all">
                 <i className="fa-brands fa-linkedin-in text-lg"></i>
               </a>
-              <a href="mailto:contact@devaditech.com" aria-label="Email" className="w-10 h-10 rounded-xl bg-slate-200/70 dark:bg-dark-card border border-slate-300/50 dark:border-dark-border flex items-center justify-center text-slate-700 dark:text-slate-300 hover:bg-brand-600 hover:text-white dark:hover:bg-brand-600 transition-all">
+              <a href="mailto:adisanureni2023@gmail.com" aria-label="Email" className="w-10 h-10 rounded-xl bg-slate-200/70 dark:bg-dark-card border border-slate-300/50 dark:border-dark-border flex items-center justify-center text-slate-700 dark:text-slate-300 hover:bg-brand-600 hover:text-white dark:hover:bg-brand-600 transition-all">
                 <i className="fa-solid fa-envelope text-lg"></i>
               </a>
-              <a href="https://wa.me/" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp" className="w-10 h-10 rounded-xl bg-slate-200/70 dark:bg-dark-card border border-slate-300/50 dark:border-dark-border flex items-center justify-center text-slate-700 dark:text-slate-300 hover:bg-brand-600 hover:text-white dark:hover:bg-brand-600 transition-all">
+              <a href="https://wa.me/2348137565810" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp" className="w-10 h-10 rounded-xl bg-slate-200/70 dark:bg-dark-card border border-slate-300/50 dark:border-dark-border flex items-center justify-center text-slate-700 dark:text-slate-300 hover:bg-brand-600 hover:text-white dark:hover:bg-brand-600 transition-all">
                 <i className="fa-brands fa-whatsapp text-lg"></i>
               </a>
             </div>

@@ -10,7 +10,7 @@ function Footer() {
     { name: 'Services', href: '#services' },
     { name: 'Experience', href: '#experience' },
     { name: 'Contact', href: '#contact' },
-    { name: 'GitHub Profile', href: 'https://github.com/Nureni-2023', external: true },
+    { name: 'GitHub Profile', href: 'https://github.com/Dev-Aditech', external: true },
   ]
 
   return (

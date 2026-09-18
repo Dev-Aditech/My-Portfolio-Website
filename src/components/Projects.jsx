@@ -61,14 +61,15 @@ function Projects() {
                 )}
 
                 <div className="absolute inset-0 bg-[radial-gradient(#ffffff15_1px,transparent_1px)] bg-size-[16px_16px] opacity-30"></div>
-                <div className="absolute inset-0 bg-linear-to-t from-black/75 via-black/10 to-transparent"></div>
+                <div className="absolute inset-0 bg-black/35"></div>
+                <div className="absolute inset-0 bg-linear-to-t from-black/80 via-black/20 to-transparent"></div>
 
                 <div className="relative z-10 h-full flex flex-col justify-between p-6">
                   <div className="flex justify-between items-center">
-                    <span className={`px-3 py-1 rounded-full text-[11px] font-mono border ${project.badgeColor}`}>{project.badge}</span>
+                    <span className="px-3 py-1 rounded-full text-[11px] font-mono bg-black/40 backdrop-blur-sm text-white border border-white/20">{project.badge}</span>
                     <span className="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center text-white"><i className={`fa-solid ${project.icon}`}></i></span>
                   </div>
-                  <h3 className={`text-xl font-bold text-white transition-colors ${project.accentText}`}>{project.title}</h3>
+                  <h3 className="text-xl font-bold text-white transition-colors">{project.title}</h3>
                 </div>
               </div>
               <div className="p-6 flex-1 flex flex-col justify-between space-y-4">
@@ -85,7 +86,7 @@ function Projects() {
                       <i className="fa-solid fa-arrow-right text-[10px]"></i>
                     </button>
                     <div className="flex items-center gap-3">
-                      <a href="https://github.com/Nureni-2023" target="_blank" rel="noopener noreferrer" aria-label="GitHub Repository" className="text-slate-500 hover:text-slate-900 dark:hover:text-white transition-colors">
+                      <a href={project.githubUrl} target="_blank" rel="noopener noreferrer" aria-label="GitHub Repository" className="text-slate-500 hover:text-slate-900 dark:hover:text-white transition-colors">
                         <i className="fa-brands fa-github text-base"></i>
                       </a>
                       {project.liveUrl && (

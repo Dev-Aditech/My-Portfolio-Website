@@ -1,12 +1,14 @@
 import { useState, useEffect } from 'react'
+import emailjs from '@emailjs/browser'
 
 function Contact() {
   const [formData, setFormData] = useState({ name: '', email: '', subject: '', message: '' })
   const [toast, setToast] = useState(null)
+  const [isSending, setIsSending] = useState(false)
 
   useEffect(() => {
     if (!toast) return
-    const timer = setTimeout(() => setToast(null), 3000)
+    const timer = setTimeout(() => setToast(null), 4000)
     return () => clearTimeout(timer)
   }, [toast])
 
@@ -23,12 +25,38 @@ function Contact() {
       return
     }
 
-    setToast({ message: 'Thank you! Your message has been sent successfully.', type: 'success' })
-    setFormData({ name: '', email: '', subject: '', message: '' })
+    setIsSending(true)
+
+    const templateParams = {
+      name: formData.name,
+      email: formData.email,
+      subject: formData.subject,
+      message: formData.message,
+      time: new Date().toLocaleString(),
+    }
+
+    emailjs
+      .send(
+        import.meta.env.VITE_EMAILJS_SERVICE_ID,
+        import.meta.env.VITE_EMAILJS_TEMPLATE_ID,
+        templateParams,
+        { publicKey: import.meta.env.VITE_EMAILJS_PUBLIC_KEY }
+      )
+      .then(() => {
+        setToast({ message: 'Thank you! Your message has been sent successfully.', type: 'success' })
+        setFormData({ name: '', email: '', subject: '', message: '' })
+      })
+      .catch((error) => {
+        console.error('EmailJS error:', error)
+        setToast({ message: 'Something went wrong sending your message. Please try again or email me directly.', type: 'error' })
+      })
+      .finally(() => {
+        setIsSending(false)
+      })
   }
 
   const copyEmail = () => {
-    navigator.clipboard.writeText('contact@devaditech.com')
+    navigator.clipboard.writeText('adisanureni2023@gmail.com')
     setToast({ message: 'Email copied to clipboard!', type: 'success' })
   }
 
@@ -57,7 +85,7 @@ function Contact() {
                   <div>
                     <span className="block text-xs font-mono text-slate-400 dark:text-dark-muted">Email Me</span>
                     <button onClick={copyEmail} className="text-sm font-semibold text-slate-800 dark:text-slate-200 hover:text-brand-600 transition-colors flex items-center gap-2">
-                      <span>contact@devaditech.com</span>
+                      <span>adisanureni2023@gmail.com</span>
                       <i className="fa-regular fa-copy text-xs"></i>
                     </button>
                   </div>
@@ -69,7 +97,7 @@ function Contact() {
                   </div>
                   <div>
                     <span className="block text-xs font-mono text-slate-400 dark:text-dark-muted">WhatsApp</span>
-                    <a href="https://wa.me/" target="_blank" rel="noopener noreferrer" className="text-sm font-semibold text-slate-800 dark:text-slate-200 hover:text-emerald-600 transition-colors">
+                    <a href="https://wa.me/2348137565810" target="_blank" rel="noopener noreferrer" className="text-sm font-semibold text-slate-800 dark:text-slate-200 hover:text-emerald-600 transition-colors">
                       Chat on WhatsApp
                     </a>
                   </div>
@@ -81,8 +109,8 @@ function Contact() {
                   </div>
                   <div>
                     <span className="block text-xs font-mono text-slate-400 dark:text-dark-muted">GitHub</span>
-                    <a href="https://github.com/Nureni-2023" target="_blank" rel="noopener noreferrer" className="text-sm font-semibold text-slate-800 dark:text-slate-200 hover:text-blue-600 transition-colors">
-                      Nureni-2023
+                    <a href="https://github.com/Dev-Aditech" target="_blank" rel="noopener noreferrer" className="text-sm font-semibold text-slate-800 dark:text-slate-200 hover:text-blue-600 transition-colors">
+                      Dev-Aditech
                     </a>
                   </div>
                 </div>
@@ -113,9 +141,9 @@ function Contact() {
                 <textarea id="message" rows="5" value={formData.message} onChange={handleChange} placeholder="Tell me about your project or inquiry..." className="w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-dark-surface border border-slate-200 dark:border-dark-border text-slate-800 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-brand-500 text-sm resize-none"></textarea>
               </div>
 
-              <button type="submit" className="w-full py-4 rounded-xl bg-brand-600 hover:bg-brand-700 text-white font-semibold text-sm shadow-lg shadow-brand-500/25 transition-all flex items-center justify-center gap-2">
-                <span>Send Message</span>
-                <i className="fa-solid fa-paper-plane text-xs"></i>
+              <button type="submit" disabled={isSending} className="w-full py-4 rounded-xl bg-brand-600 hover:bg-brand-700 disabled:opacity-60 disabled:cursor-not-allowed text-white font-semibold text-sm shadow-lg shadow-brand-500/25 transition-all flex items-center justify-center gap-2">
+                <span>{isSending ? 'Sending...' : 'Send Message'}</span>
+                <i className={`fa-solid ${isSending ? 'fa-spinner fa-spin' : 'fa-paper-plane'} text-xs`}></i>
               </button>
             </form>
           </div>
@@ -123,7 +151,7 @@ function Contact() {
       </div>
 
       {toast && (
-        <div className={`fixed bottom-6 right-6 z-50 px-5 py-3.5 rounded-xl shadow-xl text-sm font-semibold text-white flex items-center gap-2 ${toast.type === 'error' ? 'bg-rose-600' : 'bg-emerald-600'}`}>
+        <div className={`fixed bottom-6 right-6 z-50 px-5 py-3.5 rounded-xl shadow-xl text-sm font-semibold text-white flex items-center gap-2 max-w-sm ${toast.type === 'error' ? 'bg-rose-600' : 'bg-emerald-600'}`}>
           <i className={`fa-solid ${toast.type === 'error' ? 'fa-circle-exclamation' : 'fa-circle-check'}`}></i>
           <span>{toast.message}</span>
         </div>
