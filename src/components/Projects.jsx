@@ -1,10 +1,29 @@
-import { useState } from 'react'
-import { projects } from '../data/projectsData'
+import { useState, useEffect } from 'react'
+import { projects as builtInProjects, caseStudies as builtInCaseStudies } from '../data/projectsData'
+import { fetchCustomProjects } from '../data/customProjects'
 import CaseStudyModal from './CaseStudyModal'
 
 function Projects() {
   const [activeFilter, setActiveFilter] = useState('all')
   const [openProjectId, setOpenProjectId] = useState(null)
+  const [query, setQuery] = useState('')
+  const [projects, setProjects] = useState(builtInProjects)
+  const [caseStudies, setCaseStudies] = useState(builtInCaseStudies)
+
+  useEffect(() => {
+    let cancelled = false
+    fetchCustomProjects()
+      .then((items) => {
+        if (cancelled || items.length === 0) return
+        setProjects([...builtInProjects, ...items.map((item) => item.project)])
+        setCaseStudies({
+          ...builtInCaseStudies,
+          ...Object.fromEntries(items.filter((item) => item.caseStudy).map((item) => [item.project.id, item.caseStudy])),
+        })
+      })
+      .catch((error) => console.error('Could not load projects from Firebase:', error))
+    return () => { cancelled = true }
+  }, [])
 
   const filters = [
     { key: 'all', label: 'All Projects' },
@@ -13,9 +32,16 @@ function Projects() {
     { key: 'frontend', label: 'Frontend / UI' },
   ]
 
-  const visibleProjects = activeFilter === 'all'
-    ? projects
-    : projects.filter((project) => project.category === activeFilter)
+  const normalizedQuery = query.trim().toLowerCase()
+  const visibleProjects = projects
+    .filter((project) => activeFilter === 'all' || project.category === activeFilter)
+    .filter((project) =>
+      !normalizedQuery ||
+      [project.title, project.description, project.badge, ...project.tags]
+        .join(' ')
+        .toLowerCase()
+        .includes(normalizedQuery)
+    )
 
   const getScreenshotUrl = (liveUrl) => `https://image.thum.io/get/width/800/crop/500/noanimate/${liveUrl}`
 
@@ -43,6 +69,25 @@ function Projects() {
             </button>
           ))}
         </div>
+
+        <div className="max-w-md mx-auto mb-12 relative">
+          <i className="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 text-sm"></i>
+          <input
+            type="search"
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            placeholder="Search by name or technology (e.g. React)"
+            aria-label="Search projects"
+            className="w-full pl-10 pr-4 py-3 rounded-xl bg-white dark:bg-dark-card border border-slate-200 dark:border-dark-border text-slate-800 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-brand-500 text-sm"
+          />
+        </div>
+
+        {visibleProjects.length === 0 && (
+          <div className="text-center py-12 text-sm text-slate-500 dark:text-dark-muted">
+            <p>No projects match your search.</p>
+            <button onClick={() => { setQuery(''); setActiveFilter('all') }} className="mt-3 text-brand-600 dark:text-brand-400 font-semibold hover:underline">Clear filters</button>
+          </div>
+        )}
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {visibleProjects.map((project) => (
@@ -81,10 +126,12 @@ function Projects() {
                     ))}
                   </div>
                   <div className="pt-4 border-t border-slate-100 dark:border-dark-border flex items-center justify-between">
-                    <button onClick={() => setOpenProjectId(project.id)} className="text-xs font-semibold text-brand-600 dark:text-brand-400 hover:underline flex items-center gap-1.5">
-                      <span>Case Study</span>
-                      <i className="fa-solid fa-arrow-right text-[10px]"></i>
-                    </button>
+                    {caseStudies[project.id] ? (
+                      <button onClick={() => setOpenProjectId(project.id)} className="text-xs font-semibold text-brand-600 dark:text-brand-400 hover:underline flex items-center gap-1.5">
+                        <span>Case Study</span>
+                        <i className="fa-solid fa-arrow-right text-[10px]"></i>
+                      </button>
+                    ) : <span></span>}
                     <div className="flex items-center gap-3">
                       <a href={project.githubUrl} target="_blank" rel="noopener noreferrer" aria-label="GitHub Repository" className="text-slate-500 hover:text-slate-900 dark:hover:text-white transition-colors">
                         <i className="fa-brands fa-github text-base"></i>
@@ -103,7 +150,7 @@ function Projects() {
         </div>
       </div>
 
-      <CaseStudyModal projectId={openProjectId} onClose={() => setOpenProjectId(null)} />
+      <CaseStudyModal projectId={openProjectId} caseStudies={caseStudies} onClose={() => setOpenProjectId(null)} />
     </section>
   )
 }

@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import AdminProjects from './components/AdminProjects'
 import Navbar from './components/Navbar'
 import ScrollProgress from './components/ScrollProgress'
 import Hero from './components/Hero'
@@ -13,21 +14,37 @@ import WhyWorkWithMe from './components/WhyWorkWithMe'
 import Testimonials from './components/Testimonials'
 import Contact from './components/Contact'
 import Footer from './components/Footer'
+import BackToTop from './components/BackToTop'
 import './App.css'
 
 function App() {
-  const [isDark, setIsDark] = useState(true)
+  const [isDark, setIsDark] = useState(() => {
+    try {
+      const saved = localStorage.getItem('theme')
+      if (saved) return saved === 'dark'
+    } catch { /* storage unavailable */ }
+    return window.matchMedia?.('(prefers-color-scheme: dark)').matches ?? true
+  })
 
   useEffect(() => {
-    if (isDark) {
-      document.documentElement.classList.add('dark')
-    } else {
-      document.documentElement.classList.remove('dark')
-    }
+    document.documentElement.classList.toggle('dark', isDark)
+    try { localStorage.setItem('theme', isDark ? 'dark' : 'light') } catch { /* ignore */ }
   }, [isDark])
+
+  const [route, setRoute] = useState(window.location.hash)
+
+  useEffect(() => {
+    const onHashChange = () => setRoute(window.location.hash)
+    window.addEventListener('hashchange', onHashChange)
+    return () => window.removeEventListener('hashchange', onHashChange)
+  }, [])
 
   const toggleTheme = () => {
     setIsDark(!isDark)
+  }
+
+  if (route === '#/admin') {
+    return <AdminProjects isDark={isDark} toggleTheme={toggleTheme} />
   }
 
   return (
@@ -46,6 +63,7 @@ function App() {
       <Testimonials />
       <Contact />
       <Footer />
+      <BackToTop />
     </>
   )
 }

@@ -5,6 +5,19 @@ function Contact() {
   const [formData, setFormData] = useState({ name: '', email: '', subject: '', message: '' })
   const [toast, setToast] = useState(null)
   const [isSending, setIsSending] = useState(false)
+  const [errors, setErrors] = useState({})
+  const [honeypot, setHoneypot] = useState('')
+  const [lastSent, setLastSent] = useState(0)
+  const MAX_MESSAGE = 1000
+
+  const validate = (data) => {
+    const next = {}
+    if (data.name.trim().length < 2) next.name = 'Please enter your name.'
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email.trim())) next.email = 'Please enter a valid email address.'
+    if (data.subject.trim().length < 3) next.subject = 'Please add a short subject.'
+    if (data.message.trim().length < 10) next.message = 'Message should be at least 10 characters.'
+    return next
+  }
 
   useEffect(() => {
     if (!toast) return
@@ -14,14 +27,24 @@ function Contact() {
 
   const handleChange = (event) => {
     const { id, value } = event.target
-    setFormData((prev) => ({ ...prev, [id]: value }))
+    setFormData((prev) => ({ ...prev, [id]: id === 'message' ? value.slice(0, MAX_MESSAGE) : value }))
+    if (errors[id]) setErrors((prev) => ({ ...prev, [id]: undefined }))
   }
 
   const handleSubmit = (event) => {
     event.preventDefault()
 
-    if (!formData.name || !formData.email || !formData.subject || !formData.message) {
-      setToast({ message: 'Please fill in all required fields.', type: 'error' })
+    if (honeypot) return // bots fill hidden fields
+
+    const found = validate(formData)
+    if (Object.keys(found).length) {
+      setErrors(found)
+      setToast({ message: 'Please fix the highlighted fields.', type: 'error' })
+      return
+    }
+
+    if (Date.now() - lastSent < 30000) {
+      setToast({ message: 'Please wait a few seconds before sending another message.', type: 'error' })
       return
     }
 
@@ -45,6 +68,8 @@ function Contact() {
       .then(() => {
         setToast({ message: 'Thank you! Your message has been sent successfully.', type: 'success' })
         setFormData({ name: '', email: '', subject: '', message: '' })
+        setErrors({})
+        setLastSent(Date.now())
       })
       .catch((error) => {
         console.error('EmailJS error:', error)
@@ -119,26 +144,34 @@ function Contact() {
           </div>
 
           <div className="lg:col-span-7">
-            <form onSubmit={handleSubmit} className="p-8 rounded-3xl bg-white dark:bg-dark-card border border-slate-200 dark:border-dark-border shadow-sm space-y-6">
+            <form onSubmit={handleSubmit} noValidate className="p-8 rounded-3xl bg-white dark:bg-dark-card border border-slate-200 dark:border-dark-border shadow-sm space-y-6">
+              <input type="text" name="website" tabIndex={-1} autoComplete="off" aria-hidden="true" value={honeypot} onChange={(e) => setHoneypot(e.target.value)} className="hidden" />
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                 <div className="space-y-2">
                   <label htmlFor="name" className="block text-xs font-semibold text-slate-700 dark:text-slate-300 uppercase tracking-wider">Your Name</label>
-                  <input type="text" id="name" value={formData.name} onChange={handleChange} placeholder="Adisa Nureni" className="w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-dark-surface border border-slate-200 dark:border-dark-border text-slate-800 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-brand-500 text-sm" />
+                  <input type="text" id="name" value={formData.name} onChange={handleChange} placeholder="Adisa Nureni" aria-invalid={!!errors.name} className={`w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-dark-surface border ${errors.name ? 'border-rose-500' : 'border-slate-200 dark:border-dark-border'} text-slate-800 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-brand-500 text-sm`} />
+                  {errors.name && <p className="text-xs text-rose-500">{errors.name}</p>}
                 </div>
                 <div className="space-y-2">
                   <label htmlFor="email" className="block text-xs font-semibold text-slate-700 dark:text-slate-300 uppercase tracking-wider">Your Email</label>
-                  <input type="email" id="email" value={formData.email} onChange={handleChange} placeholder="name@example.com" className="w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-dark-surface border border-slate-200 dark:border-dark-border text-slate-800 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-brand-500 text-sm" />
+                  <input type="email" id="email" value={formData.email} onChange={handleChange} placeholder="name@example.com" aria-invalid={!!errors.email} className={`w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-dark-surface border ${errors.email ? 'border-rose-500' : 'border-slate-200 dark:border-dark-border'} text-slate-800 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-brand-500 text-sm`} />
+                  {errors.email && <p className="text-xs text-rose-500">{errors.email}</p>}
                 </div>
               </div>
 
               <div className="space-y-2">
                 <label htmlFor="subject" className="block text-xs font-semibold text-slate-700 dark:text-slate-300 uppercase tracking-wider">Subject</label>
-                <input type="text" id="subject" value={formData.subject} onChange={handleChange} placeholder="Project Inquiry / Job Opportunity / Training" className="w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-dark-surface border border-slate-200 dark:border-dark-border text-slate-800 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-brand-500 text-sm" />
+                <input type="text" id="subject" value={formData.subject} onChange={handleChange} placeholder="Project Inquiry / Job Opportunity / Training" aria-invalid={!!errors.subject} className={`w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-dark-surface border ${errors.subject ? 'border-rose-500' : 'border-slate-200 dark:border-dark-border'} text-slate-800 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-brand-500 text-sm`} />
+                  {errors.subject && <p className="text-xs text-rose-500">{errors.subject}</p>}
               </div>
 
               <div className="space-y-2">
                 <label htmlFor="message" className="block text-xs font-semibold text-slate-700 dark:text-slate-300 uppercase tracking-wider">Message</label>
-                <textarea id="message" rows="5" value={formData.message} onChange={handleChange} placeholder="Tell me about your project or inquiry..." className="w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-dark-surface border border-slate-200 dark:border-dark-border text-slate-800 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-brand-500 text-sm resize-none"></textarea>
+                <textarea id="message" rows="5" value={formData.message} onChange={handleChange} placeholder="Tell me about your project or inquiry..." aria-invalid={!!errors.message} className={`w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-dark-surface border ${errors.message ? 'border-rose-500' : 'border-slate-200 dark:border-dark-border'} text-slate-800 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-brand-500 text-sm resize-none`}></textarea>
+                <div className="flex justify-between text-xs">
+                  <span className="text-rose-500">{errors.message}</span>
+                  <span className="text-slate-400 dark:text-dark-muted font-mono">{formData.message.length}/{MAX_MESSAGE}</span>
+                </div>
               </div>
 
               <button type="submit" disabled={isSending} className="w-full py-4 rounded-xl bg-brand-600 hover:bg-brand-700 disabled:opacity-60 disabled:cursor-not-allowed text-white font-semibold text-sm shadow-lg shadow-brand-500/25 transition-all flex items-center justify-center gap-2">

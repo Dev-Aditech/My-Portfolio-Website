@@ -1,6 +1,4 @@
-import { caseStudies } from '../data/projectsData'
-
-function CaseStudyModal({ projectId, onClose }) {
+function CaseStudyModal({ projectId, caseStudies, onClose }) {
   if (!projectId) return null
 
   const data = caseStudies[projectId]

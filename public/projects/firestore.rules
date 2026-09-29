@@ -1,0 +1,399 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function isSignedIn() { return request.auth != null; }
+    function isAdmin() {
+      return isSignedIn() &&
+        exists(/databases/$(database)/documents/admins/$(request.auth.uid));
+    }
+    function isOwner(uid) { return isSignedIn() && request.auth.uid == uid; }
+    // Firebase ID tokens carry email_verified as a claim, so this needs no
+    // extra Firestore read/lookup — it's available on request.auth.token
+    // for free. Used to gate the client-direct writes that acquire a
+    // course for free (enrollments where amount==0, i.e. free courses and
+    // coupon redemption) or request a private class. These used to only
+    // be blocked by a client-side popup, which a modified or bypassed
+    // frontend could skip entirely since nothing here actually stopped
+    // the write — this is the real boundary now; the popup is just the
+    // friendly heads-up before a student would otherwise hit it.
+    //
+    // NOT applied to paid enrollments: those are written by
+    // api/verify-flutterwave.js via the Admin SDK (which bypasses these
+    // rules entirely) AFTER Flutterwave has already charged the student —
+    // rejecting at that point would take their money and give them
+    // nothing, which is worse than the problem this is solving. The
+    // client-side popup (shown before the Flutterwave checkout even
+    // opens) is the only gate for that path, intentionally.
+    function emailVerified() { return isSignedIn() && request.auth.token.email_verified == true; }
+
+    // Rate limiting: companion-document pattern (the standard, officially
+    // documented approach for Firestore, since rules alone have no notion
+    // of "how many times has this happened recently" — only whether THIS
+    // one write is individually valid). Each student has one
+    // writeRateLimits/{uid} doc (rules for it are below, near the bottom)
+    // holding a timestamp per rate-limited action. A real write (e.g. a
+    // new booking) must arrive in the SAME batch/transaction as an update
+    // to that timestamp — enforced by writeRateLimits' own rules, which
+    // require the new value to equal request.time (the server's clock,
+    // never client-suppliable) — and this function checks that the
+    // PREVIOUS value of that timestamp is old enough before allowing the
+    // new write through at all.
+    function cooldownOk(uid, field, minSeconds) {
+      let rl = /databases/$(database)/documents/writeRateLimits/$(uid);
+      return !exists(rl) || !(field in get(rl).data)
+        || request.time > get(rl).data[field] + duration.value(minSeconds, 's');
+    }
+
+    match /courses/{courseId} {
+      allow read: if true;               // public catalog
+      allow write: if isAdmin();
+    }
+    function studentUpdateAllowed(uid) {
+      // A student may update their own doc freely EXCEPT for `name` — that
+      // can only ever be set once, at account creation (see the separate
+      // `allow create` below); after that only an admin can change it.
+      // `academicNumber` gets a narrower exception: the self-heal logic in
+      // firebase-bootstrap.js legitimately backfills it client-side for
+      // accounts created before that feature existed, but only ever from
+      // "unset" to a value — never overwriting an already-assigned one.
+      let diffKeys = request.resource.data.diff(resource.data).affectedKeys();
+      let nameUnchanged = !diffKeys.hasAny(['name']);
+      let academicNumberChangeOk = !diffKeys.hasAny(['academicNumber'])
+        || !('academicNumber' in resource.data)
+        || resource.data.academicNumber == null;
+      // enrollmentCount is a denormalized counter (see enrollStudent() and
+      // redeemCoupon() in firestore-service.js) — it must move up by
+      // exactly 1, in the same transaction that actually creates an
+      // enrollment, never be set directly to an arbitrary value by a
+      // modified/bypassed frontend calling updateDoc() straight on this
+      // path. Mirrors the same "monotonic single step" pattern already
+      // used for counters/{counterId}.seq near the bottom of this file.
+      let priorCount = ('enrollmentCount' in resource.data) && resource.data.enrollmentCount != null
+        ? resource.data.enrollmentCount : 0;
+      let enrollmentCountOk = !diffKeys.hasAny(['enrollmentCount'])
+        || request.resource.data.enrollmentCount == priorCount + 1;
+      return nameUnchanged && academicNumberChangeOk && enrollmentCountOk;
+    }
+    match /students/{uid} {
+      allow read: if isOwner(uid) || isAdmin();
+      // enrollmentCount, if present at all on the very first write, must
+      // start at 0 — same reasoning as the update-side guard above.
+      allow create: if isOwner(uid)
+                    && (!('enrollmentCount' in request.resource.data) || request.resource.data.enrollmentCount == 0);
+      allow update: if isAdmin() || (isOwner(uid) && studentUpdateAllowed(uid));
+      allow delete: if isAdmin();
+    }
+    match /enrollments/{docId} {
+      // Tightened from `isSignedIn()`: that let ANY signed-in student list
+      // every student's enrollment history — courseId, amount paid,
+      // paymentRef — not just their own. The app's own student-facing
+      // reads already filter by where('uid','==', uid) and every admin
+      // read already goes through isAdmin(), so this closes the leak
+      // without touching any real query path. Mirrors /bookings below.
+      allow read: if isOwner(resource.data.uid) || isAdmin();
+      // Only FREE enrollments (amount == 0) may be created directly by the
+      // client. Paid enrollments are only ever written by the Vercel
+      // function (api/verify-flutterwave.js) using the Firebase Admin SDK,
+      // which bypasses these rules entirely — so this line intentionally
+      // blocks a client from writing a fake "paid" enrollment straight to
+      // Firestore without actually paying.
+      allow create: if isSignedIn()
+                    && emailVerified()
+                    && request.auth.uid == request.resource.data.uid
+                    && request.resource.data.amount == 0;
+      allow update, delete: if isAdmin();
+    }
+    match /processedPayments/{transactionId} {
+      // Dedup ledger for api/verify-flutterwave.js: records which
+      // uid+courseId each Flutterwave transactionId was already used for,
+      // so the same real payment can't be replayed against a second,
+      // different enrollment. Written ONLY by that Vercel function via the
+      // Admin SDK, which bypasses these rules entirely — so `write: false`
+      // here isn't just belt-and-suspenders against a stray client bug, it
+      // specifically blocks even a compromised/authenticated admin account
+      // from tampering with these records directly. Admins can still read
+      // them (e.g. for support/audit) through the admin panel.
+      allow read: if isAdmin();
+      allow write: if false;
+    }
+    match /presence/{docId} {
+      allow read: if isSignedIn();
+      allow write: if isAdmin();
+    }
+    match /coupons/{code} {
+      // A coupon unlocks one specific course for free, one time. Students
+      // need read access so the client can check a code's validity before
+      // calling redeemCoupon() — but they never write these documents
+      // directly; redemption goes through the /enrollments write path
+      // (via a transaction in redeemCoupon()), which is what actually
+      // flips `used` to true. This keeps a student from marking a code
+      // "used" without a matching enrollment being created, or reusing
+      // a code by rewriting it back to unused.
+      allow read: if isSignedIn();
+      allow create: if isAdmin();
+      // A student may redeem (mark used) their own way only by flipping
+      // used:false -> true, setting usedBy to themselves, and touching
+      // nothing else but usedByName/usedAt alongside it. Admins can still
+      // freely edit/delete otherwise.
+      allow update: if isAdmin()
+                    || (isSignedIn()
+                        && emailVerified()
+                        && resource.data.used == false
+                        && request.resource.data.used == true
+                        && request.resource.data.usedBy == request.auth.uid
+                        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['used', 'usedBy', 'usedByName', 'usedAt']));
+      allow delete: if isAdmin();
+    }
+    match /progress/{docId} {
+      // docId is always `${uid}_${courseId}` (see getProgress/updateLessonProgress
+      // in firestore-service.js), so a student's own uid can be checked straight
+      // from the path — this also means a get() for a progress doc that doesn't
+      // exist yet (the student's very first lesson) still evaluates correctly,
+      // where a resource.data-based check would error on a null resource.
+      // Admin reads (Analytics tab) and cross-student reads always go through
+      // isAdmin() instead.
+      allow read, write: if isAdmin() || (isSignedIn() && docId.split('_')[0] == request.auth.uid);
+    }
+    match /quizAttempts/{docId} {
+      // docId is always `${uid}_${lessonId}` (see saveQuizAttempt) — same
+      // reasoning as /progress above.
+      allow read, write: if isAdmin() || (isSignedIn() && docId.split('_')[0] == request.auth.uid);
+    }
+    match /finalExamRequests/{docId} {
+      // Tightened from `isSignedIn()` — same leak as /enrollments above,
+      // this time exposing exam status/grades across every student. The
+      // student app already queries this with where('uid','==', uid)
+      // (getFinalExamRequestsForStudent, subscribeToFinalExamRequestsForStudent),
+      // and the admin panel's broad queries already run under isAdmin(),
+      // so nothing real breaks.
+      allow read: if isOwner(resource.data.uid) || isAdmin();
+      // A student may only create their own request, and only in the
+      // starting "pending_approval" state with no grade attached yet —
+      // approving, sending the exam, and grading are all admin-only
+      // actions (isAdmin()). Without the `passed == null` check here too,
+      // a student could create a doc that's simultaneously
+      // status:'pending_approval' AND passed:true in one write; that
+      // specific combination can't unlock a certificate on its own
+      // (courses.js's isCourseCompleted() also requires status=='graded'),
+      // but it's forged data sitting in the collection for no reason, so
+      // we just close the door on it outright.
+      allow create: if isSignedIn()
+                    && request.auth.uid == request.resource.data.uid
+                    && request.resource.data.status == 'pending_approval'
+                    && request.resource.data.passed == null;
+      // Admin can update anything (approve, grade, etc). A student may
+      // ALSO update their own request in exactly two situations:
+      //  1. approved -> submitted (confirming they've filled in the
+      //     external answer form) — only status/submittedAt change.
+      //  2. graded (failed) -> pending_approval (requesting a retake
+      //     after failing) — resets straight back to a clean request;
+      //     a student still can never set status to anything but
+      //     'pending_approval', and (per the same passed == null check as
+      //     the create rule above) can never smuggle passed:true into
+      //     that same write either — only an admin's own later update can
+      //     set passed at all.
+      allow update: if isAdmin()
+                    || (isSignedIn()
+                        && request.auth.uid == resource.data.uid
+                        && resource.data.status == 'approved'
+                        && request.resource.data.status == 'submitted'
+                        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['status', 'submittedAt']))
+                    || (isSignedIn()
+                        && request.auth.uid == resource.data.uid
+                        && resource.data.status == 'graded'
+                        && resource.data.passed == false
+                        && request.resource.data.status == 'pending_approval'
+                        && request.resource.data.passed == null);
+    }
+    match /certificates/{docId} {
+      // Public read is intentional: this is what the /verify.html QR page
+      // relies on — an employer scanning a certificate's QR code is never
+      // signed in, so verification has to work for anonymous visitors.
+      // Only ever contains what's already printed on the certificate
+      // itself (name, course, grade, cert number) — no other student PII.
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+    match /oralExams/{docId} {
+      // Tightened from `isSignedIn()` — same leak as /enrollments and
+      // /finalExamRequests above. The student app already queries this
+      // with where('uid','==', uid) (getOralExamRequestsForStudent,
+      // subscribeToOralExamRequestsForStudent), and every admin broad
+      // query already runs under isAdmin(), so nothing real breaks.
+      allow read: if isOwner(resource.data.uid) || isAdmin();
+      // Mirrors /finalExamRequests above, including the same passed==null
+      // guard on both create and the failed-retake update branch: a
+      // student may only create their own request in the starting
+      // "pending_schedule" state, and can never attach passed:true to any
+      // write themselves. Scheduling the Google Meet, grading, and
+      // marking the Ijazah collected are all admin-only actions.
+      allow create: if isSignedIn()
+                    && request.auth.uid == request.resource.data.uid
+                    && request.resource.data.status == 'pending_schedule'
+                    && request.resource.data.passed == null;
+      // Admin can update anything (schedule, grade, mark collected). A
+      // student may ALSO update their own request in exactly one
+      // situation: graded (failed) -> pending_schedule, requesting a
+      // retake after failing the oral exam — a student can never set
+      // status to anything but 'pending_schedule' themselves, and (same
+      // passed == null guard as above) can never write passed:true this
+      // way — only an admin's own update can do that.
+      allow update: if isAdmin()
+                    || (isSignedIn()
+                        && request.auth.uid == resource.data.uid
+                        && resource.data.status == 'graded'
+                        && resource.data.passed == false
+                        && request.resource.data.status == 'pending_schedule'
+                        && request.resource.data.passed == null);
+    }
+    match /conversations/{convId} {
+      // Conversation ids are always deterministic: `conv_${uid}` (see
+      // conversationIdFor() in firestore-service.js). Ownership is checked
+      // against convId itself, NOT resource.data.studentUid, because
+      // ensureConversation() does a getDoc() on this path *before* the doc
+      // necessarily exists (a brand-new student's very first login) — on a
+      // nonexistent doc `resource` is null, so any resource.data.* check
+      // throws and gets treated as denied. Same fix as /progress and
+      // /quizAttempts above.
+      allow read, update, delete: if isAdmin()
+                    || (isSignedIn() && convId == 'conv_' + request.auth.uid);
+      // A brand-new conversation has no resource.data yet, so creation is
+      // checked against the incoming data instead — either the student
+      // creating their own conversation, or an admin starting one on a
+      // student's behalf (admin-messages.js's openConversation() does
+      // exactly that for a student who has no thread yet).
+      allow create: if isAdmin() || isOwner(request.resource.data.studentUid);
+
+      match /messages/{msgId} {
+        // Message subdocs don't carry studentUid themselves, so ownership
+        // is checked via the deterministic parent conversation id instead
+        // of a get() on the parent doc (which is slower and hits the same
+        // "doc may not exist yet" edge case the parent rule above avoids).
+        allow read, write: if isAdmin()
+                    || (isSignedIn() && convId == 'conv_' + request.auth.uid);
+      }
+    }
+    match /bookings/{bookingId} {
+      // Students may only read their own live-class requests; admins can
+      // read/manage all of them. Creation is now also locked to the
+      // starting "pending" status — previously a student could write a
+      // booking doc directly with status:'approved' or 'completed' and
+      // fake their own meeting-link/schedule history; every later status
+      // change still requires an admin.
+      allow read: if isOwner(resource.data.uid) || isAdmin();
+      allow create: if isSignedIn()
+                    && emailVerified()
+                    && request.auth.uid == request.resource.data.uid
+                    && request.resource.data.status == 'pending'
+                    && cooldownOk(request.auth.uid, 'lastBookingAt', 120);
+      allow update, delete: if isAdmin();
+    }
+    match /announcements/{docId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+    match /admins/{uid} {
+      // Tightened from `isSignedIn()`: that let any student list the
+      // entire admins collection, revealing exactly which uids are admin
+      // accounts. Both real call sites (admin_login.js, admin-auth.js)
+      // only ever getDoc() their OWN uid to check "am I an admin", so
+      // owner-only read is all that's actually needed.
+      allow read: if isOwner(uid);
+      allow write: if false; // manage admins from the Firebase Console only
+    }
+    match /settings/{docId} {
+      allow read: if true;       // students can read enrollmentOpen/maintenanceMode
+      allow write: if isAdmin();
+    }
+    match /practicalLabQuestions/{docId} {
+      allow read: if true;       // students need these to practice
+      allow write: if isAdmin();
+    }
+    match /caseStudies/{docId} {
+      allow read: if true;       // students need these for the Practical Lab Case Studies tab
+      allow write: if isAdmin();
+    }
+    match /weeklyQASessions/{docId} {
+      allow read: if true;       // students need to see whether this week's session is published + the meeting link
+      allow write: if isAdmin();
+    }
+    match /weeklyQAQuestions/{docId} {
+      // Students may only read their own submitted questions; admins can
+      // read/manage all of them (mirrors the /bookings rule above).
+      // Creation is now also locked to the starting "unsolved" status,
+      // for the same reason as /bookings above.
+      allow read: if isOwner(resource.data.studentId) || isAdmin();
+      allow create: if isSignedIn()
+                    && request.auth.uid == request.resource.data.studentId
+                    && request.resource.data.status == 'unsolved'
+                    && cooldownOk(request.auth.uid, 'lastWeeklyQAAt', 30);
+      allow update, delete: if isAdmin();
+    }
+    match /notifications/{docId} {
+      // Students read only their own notifications. Only admin actions
+      // create them (a student can never write themselves a fake
+      // notification). A student may mark their own as read — but that
+      // update may only ever touch the `read` field, nothing else.
+      allow read: if isOwner(resource.data.uid) || isAdmin();
+      allow create: if isAdmin();
+      allow update: if isAdmin()
+                    || (isSignedIn()
+                        && request.auth.uid == resource.data.uid
+                        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['read']));
+      allow delete: if isAdmin();
+    }
+    match /counters/{counterId} {
+      // Backs the atomic academic-number generator (counters/students,
+      // incremented via a Firestore transaction — see
+      // getNextAcademicNumber() in firestore-service.js). Any signed-in
+      // client may bump it, since it has to run at signup, before there's
+      // any admin relationship or student doc to lean on for permission.
+      // A student can only ever touch the `seq` field, and only move it
+      // forward — never rewrite the whole doc, add other fields, or wind
+      // the counter backward to reuse a number.
+      allow read: if isSignedIn();
+      allow create: if isSignedIn()
+                    && request.resource.data.keys().hasOnly(['seq'])
+                    && request.resource.data.seq is int;
+      allow update: if isSignedIn()
+                    && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['seq'])
+                    && request.resource.data.seq is int
+                    && request.resource.data.seq > resource.data.seq;
+      allow delete: if isAdmin();
+    }
+    match /writeRateLimits/{uid} {
+      // Companion doc for the cooldownOk() checks above — one per
+      // student, one timestamp field per rate-limited action
+      // (lastBookingAt, lastWeeklyQAAt so far). A student may only ever
+      // write to their OWN doc, touching exactly one field at a time,
+      // and that field's new value must equal request.time — the
+      // server's own clock — never a client-supplied timestamp (which
+      // could otherwise be backdated to fake "it's been a while"). This
+      // is what makes the cooldown untamperable: the real write it
+      // guards (e.g. a new booking) and this timestamp update both have
+      // to land together — see requestPrivateClass() etc. in
+      // firestore-service.js, which write both in a single
+      // batch/transaction.
+      //
+      // Deliberately NOT used for coupon-guessing protection: that abuse
+      // happens through repeated READS of /coupons/{guess} (checking
+      // many candidate codes), and this pattern — like Firestore
+      // Security Rules generally — can only gate writes, never reads.
+      // There is no rules-only fix for read-frequency abuse; Firebase's
+      // own guidance for that is App Check or routing the check through
+      // a Cloud Function, both a separate, larger change than this.
+      allow read: if isOwner(uid) || isAdmin();
+      allow create: if isSignedIn() && isOwner(uid)
+        && (
+          (request.resource.data.keys().hasOnly(['lastBookingAt']) && request.resource.data.lastBookingAt == request.time) ||
+          (request.resource.data.keys().hasOnly(['lastWeeklyQAAt']) && request.resource.data.lastWeeklyQAAt == request.time)
+        );
+      allow update: if isSignedIn() && isOwner(uid)
+        && (
+          (request.resource.data.diff(resource.data).affectedKeys().hasOnly(['lastBookingAt']) && request.resource.data.lastBookingAt == request.time) ||
+          (request.resource.data.diff(resource.data).affectedKeys().hasOnly(['lastWeeklyQAAt']) && request.resource.data.lastWeeklyQAAt == request.time)
+        );
+      allow delete: if isAdmin();
+    }
+  }
+}

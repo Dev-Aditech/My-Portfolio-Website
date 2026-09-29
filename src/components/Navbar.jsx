@@ -3,12 +3,36 @@ import { useState, useEffect } from 'react'
 function Navbar({ isDark, toggleTheme }) {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const [isScrolled, setIsScrolled] = useState(false)
+  const [activeSection, setActiveSection] = useState('home')
 
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 40)
     window.addEventListener('scroll', handleScroll)
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
+
+  useEffect(() => {
+    const ids = ['home', 'about', 'skills', 'projects', 'services', 'experience', 'contact']
+    const sections = ids.map((id) => document.getElementById(id)).filter(Boolean)
+    if (!sections.length || !('IntersectionObserver' in window)) return
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) setActiveSection(entry.target.id)
+        })
+      },
+      { rootMargin: '-40% 0px -55% 0px' }
+    )
+    sections.forEach((section) => observer.observe(section))
+    return () => observer.disconnect()
+  }, [])
+
+  useEffect(() => {
+    if (!isMobileMenuOpen) return
+    const onKey = (e) => e.key === 'Escape' && setIsMobileMenuOpen(false)
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  }, [isMobileMenuOpen])
 
   const navLinks = [
     { name: 'Home', href: '#home' },
@@ -36,7 +60,7 @@ function Navbar({ isDark, toggleTheme }) {
 
         <nav className="hidden md:flex items-center gap-1 lg:gap-2">
           {navLinks.map((link) => (
-            <a key={link.name} href={link.href} className="nav-link px-3 py-2 text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-brand-600 dark:hover:text-brand-400 rounded-lg transition-colors">
+            <a key={link.name} href={link.href} aria-current={activeSection === link.href.slice(1) ? 'true' : undefined} className={`nav-link px-3 py-2 text-sm font-medium rounded-lg transition-colors ${activeSection === link.href.slice(1) ? 'text-brand-600 dark:text-brand-400 bg-brand-600/10' : 'text-slate-600 dark:text-slate-300 hover:text-brand-600 dark:hover:text-brand-400'}`}>
               {link.name}
             </a>
           ))}
@@ -56,8 +80,8 @@ function Navbar({ isDark, toggleTheme }) {
             <i className="fa-solid fa-arrow-right text-xs"></i>
           </a>
 
-          <button onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)} aria-label="Open mobile menu" className="md:hidden w-10 h-10 rounded-xl bg-slate-200/70 dark:bg-dark-card border border-slate-300/60 dark:border-dark-border flex items-center justify-center text-slate-700 dark:text-slate-300 focus:outline-none focus:ring-2 focus:ring-brand-500">
-            <i className="fa-solid fa-bars text-lg"></i>
+          <button onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)} aria-label={isMobileMenuOpen ? 'Close mobile menu' : 'Open mobile menu'} aria-expanded={isMobileMenuOpen} className="md:hidden w-10 h-10 rounded-xl bg-slate-200/70 dark:bg-dark-card border border-slate-300/60 dark:border-dark-border flex items-center justify-center text-slate-700 dark:text-slate-300 focus:outline-none focus:ring-2 focus:ring-brand-500">
+            <i className={`fa-solid ${isMobileMenuOpen ? 'fa-xmark' : 'fa-bars'} text-lg`}></i>
           </button>
         </div>
       </div>
