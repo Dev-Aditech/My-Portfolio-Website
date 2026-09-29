@@ -66,7 +66,7 @@ export const projects = [
     title: 'Frontend Assessment Hub',
     description: 'A production-ready frontend assessment project demonstrating advanced DOM manipulation, responsive layouts, modular code structure, and UI precision.',
     tags: ['HTML5', 'Modular JS', 'React', 'Tailwind CSS'],
-    liveUrl: '', // TODO: add your deployed link here, e.g. 'https://your-assessment-project.vercel.app/'
+    liveUrl: 'https://aditechreceipt.vercel.app/',
     githubUrl: 'https://github.com/Dev-Aditech',
   },
   {
