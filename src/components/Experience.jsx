@@ -1,64 +1,86 @@
 function Experience() {
+  // Auto-updating duration for the current Aditechdata role (inclusive of the current month)
+  const duration = (() => {
+    const now = new Date()
+    const months = (now.getFullYear() - 2025) * 12 + (now.getMonth() - 3) + 1
+    const y = Math.floor(months / 12)
+    const m = months % 12
+    return [y ? `${y} yr${y > 1 ? 's' : ''}` : '', m ? `${m} mos` : ''].filter(Boolean).join(' ')
+  })()
+
   const timeline = [
     {
-      dotColor: 'bg-brand-600',
-      role: 'Frontend / Web Developer',
-      period: '2023 — Present',
-      periodColor: 'bg-brand-500/10 text-brand-600 dark:text-brand-400',
-      org: 'Dev Aditech (Independent Practice & Freelance)',
-      description: 'Designing and developing responsive web applications, educational platforms like Al-Fardyeen Academy, digital service portals (ADITECHDATA), and e-commerce projects. Integrating Firebase BaaS for secure authentication and database storage.',
+      dot: 'bg-brand-600 ring-brand-100 dark:ring-brand-500/20 animate-pulse',
+      role: 'Frontend Developer',
+      present: true,
+      org: 'Dual Core HQ · Internship',
+      period: 'Aug 2026 – Present',
+      place: 'Nigeria · Remote',
+      description: 'Collaborating with the engineering team to build responsive, component-driven web interfaces, optimizing frontend performance, and implementing modern React and Next.js workflows.',
+      tags: ['Next.js', 'JavaScript', 'Frontend Architecture'],
     },
     {
-      dotColor: 'bg-cyan-500',
-      role: 'Backend & Full-Stack Development',
-      period: '2024 — Present',
-      periodColor: 'bg-cyan-500/10 text-cyan-600 dark:text-cyan-400',
-      org: 'Expanding into Full-Stack Engineering',
-      description: 'Extending frontend expertise into backend development — building RESTful APIs and server-side logic with Node.js and Express, working with PHP for server-rendered applications, and using Next.js API routes to power full-stack React projects.',
+      dot: 'bg-emerald-600 ring-emerald-100 dark:ring-emerald-500/20',
+      role: 'Web Developer',
+      present: true,
+      org: 'Aditechdata.com.ng · Full-time',
+      period: `Apr 2025 – Present · ${duration}`,
+      place: 'Nigeria · Remote',
+      description: 'Serving as Full Stack Web Developer, architecting and maintaining automated digital services, user dashboards, API integrations, and secure database operations for seamless customer transactions.',
+      tags: ['Python', 'React.js', 'Full Stack Development', 'API Integration'],
     },
     {
-      dotColor: 'bg-indigo-500',
-      role: 'Web Development Projects & Client Solutions',
-      period: '2024 — Present',
-      periodColor: 'bg-indigo-500/10 text-indigo-600 dark:text-indigo-400',
-      org: 'Freelance & Collaborative Web Development',
-      description: 'Delivering robust frontend solutions, website redesigns, and interactive dashboards for clients. Focus on clean code architecture, performance optimization, and rigorous testing across all devices.',
-    },
-    {
-      dotColor: 'bg-emerald-500',
-      role: 'Coding Journey Began & Core Mastery',
-      period: '2023',
-      periodColor: 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400',
-      org: 'Intensive Learning & Skill Acquisition',
-      description: 'Started coding in 2023, building foundational expertise in HTML5, CSS3, and JavaScript. Progressed rapidly into building real-world projects, mastering responsive design principles, and exploring backend integration.',
+      dot: 'bg-slate-400 ring-slate-100 dark:ring-slate-500/20',
+      role: 'Web Developer',
+      present: false,
+      org: 'Voya App',
+      period: 'Full Stack & Web Engineering',
+      place: '',
+      description: 'Contributed to full-stack web features, interactive React.js user views, and Python backend services across a multi-technology product stack.',
+      tags: ['Python', 'React.js', 'Modern Web Stack'],
     },
   ]
 
   return (
-    <section id="experience" className="py-24 bg-slate-50 dark:bg-dark-bg">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center max-w-3xl mx-auto mb-16">
-          <span className="text-brand-600 dark:text-brand-400 font-mono text-xs uppercase tracking-widest block mb-2">05. Professional Journey</span>
-          <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-900 dark:text-white tracking-tight">Experience & Milestones</h2>
-          <div className="w-16 h-1.5 bg-brand-600 mx-auto mt-4 rounded-full"></div>
+    <section id="experience" className="py-24 bg-slate-50 dark:bg-dark-bg border-t border-slate-200 dark:border-dark-border">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="mb-12">
+          <span className="text-brand-600 dark:text-brand-400 font-mono text-xs uppercase tracking-widest block mb-2">05 / Career Timeline</span>
+          <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-900 dark:text-white tracking-tight">Work Experience</h2>
+          <p className="text-slate-600 dark:text-dark-muted text-sm sm:text-base mt-2">
+            Proven track record delivering production web solutions across remote engineering teams.
+          </p>
         </div>
 
-        <div className="max-w-3xl mx-auto">
-          <div className="relative border-l-2 border-slate-200 dark:border-dark-border pl-6 sm:pl-8 space-y-12">
-            {timeline.map((item) => (
-              <div key={item.role} className="relative">
-                <div className={`absolute -left-8.75 sm:-left-10.25 top-0 w-6 h-6 rounded-full ${item.dotColor} border-4 border-slate-50 dark:border-dark-bg`}></div>
-                <div className="p-6 rounded-3xl bg-white dark:bg-dark-card border border-slate-200 dark:border-dark-border shadow-sm space-y-3">
-                  <div className="flex flex-wrap items-center justify-between gap-2">
-                    <h3 className="text-lg font-bold text-slate-900 dark:text-white">{item.role}</h3>
-                    <span className={`px-3 py-1 rounded-full text-xs font-mono font-semibold ${item.periodColor}`}>{item.period}</span>
+        <div className="relative border-l-2 border-slate-200 dark:border-dark-border ml-3 sm:ml-4 space-y-10">
+          {timeline.map((item) => (
+            <div key={item.role + item.org} className="relative pl-7 sm:pl-10">
+              <span className={`absolute -left-2.25 top-1.5 w-4 h-4 rounded-full ring-4 ${item.dot}`}></span>
+              <div className="bg-white dark:bg-dark-card rounded-2xl border border-slate-200 dark:border-dark-border p-6 shadow-xs hover:-translate-y-1 hover:shadow-xl hover:border-brand-500/50 transition-all duration-300">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-3">
+                  <div>
+                    <div className="flex items-center gap-2.5 flex-wrap">
+                      <h3 className="text-lg font-bold text-slate-900 dark:text-white">{item.role}</h3>
+                      {item.present && (
+                        <span className="px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-emerald-50 dark:bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-500/20">Present</span>
+                      )}
+                    </div>
+                    <p className="text-sm font-semibold text-brand-600 dark:text-brand-400 mt-0.5">{item.org}</p>
                   </div>
-                  <p className="text-sm font-semibold text-slate-700 dark:text-slate-300">{item.org}</p>
-                  <p className="text-sm text-slate-600 dark:text-dark-muted leading-relaxed">{item.description}</p>
+                  <div className="text-xs font-mono text-slate-500 dark:text-dark-muted sm:text-right">
+                    <p className="font-semibold text-slate-700 dark:text-slate-300">{item.period}</p>
+                    {item.place && <p>{item.place}</p>}
+                  </div>
+                </div>
+                <p className="text-sm text-slate-600 dark:text-dark-muted leading-relaxed mb-4">{item.description}</p>
+                <div className="flex flex-wrap gap-2">
+                  {item.tags.map((tag) => (
+                    <span key={tag} className="px-2.5 py-1 rounded-lg bg-slate-100 dark:bg-dark-surface text-slate-700 dark:text-slate-300 text-xs font-medium">{tag}</span>
+                  ))}
                 </div>
               </div>
-            ))}
-          </div>
+            </div>
+          ))}
         </div>
       </div>
     </section>

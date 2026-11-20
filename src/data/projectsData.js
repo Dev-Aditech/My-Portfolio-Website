@@ -1,7 +1,24 @@
+import imaantokCover from '../assets/imaantok/cover.jpg'
+
 export const projects = [
   {
+    id: 'imaantok',
+    category: 'mobile',
+    badge: 'Mobile App',
+    icon: 'fa-mobile-screen',
+    gradient: 'from-emerald-900 to-teal-800',
+    accentText: 'group-hover:text-emerald-300',
+    badgeColor: 'bg-emerald-500/20 text-emerald-200 border-emerald-400/30',
+    title: 'ImaanTok App',
+    description: 'A mobile app for exploring and saving beneficial Islamic wisdom — Islamic videos, knowledge classes, and curated reminders — with Google and email sign-in and light/dark themes.',
+    tags: ['Mobile App', 'Authentication', 'Dark Mode', 'UI/UX'],
+    image: imaantokCover,
+    liveUrl: '',
+    githubUrl: 'https://github.com/Dev-Aditech',
+  },
+  {
     id: 'alfardyeen',
-    category: 'firebase',
+    category: 'fullstack',
     badge: 'Educational Web App',
     icon: 'fa-graduation-cap',
     gradient: 'from-brand-900 to-indigo-800',
@@ -15,7 +32,7 @@ export const projects = [
   },
   {
     id: 'aditechdata',
-    category: 'ecommerce',
+    category: 'fullstack',
     badge: 'Digital Service Platform',
     icon: 'fa-bolt',
     gradient: 'from-emerald-900 to-teal-800',
@@ -29,7 +46,7 @@ export const projects = [
   },
   {
     id: 'rukteejay',
-    category: 'ecommerce',
+    category: 'fullstack',
     badge: 'E-Commerce Platform',
     icon: 'fa-cart-shopping',
     gradient: 'from-rose-900 to-pink-800',
@@ -43,7 +60,7 @@ export const projects = [
   },
   {
     id: 'aditechbank',
-    category: 'firebase',
+    category: 'fullstack',
     badge: 'Fintech Web App',
     icon: 'fa-building-columns',
     gradient: 'from-blue-900 to-indigo-900',
@@ -57,7 +74,7 @@ export const projects = [
   },
   {
     id: 'aditechreceipt',
-    category: 'ecommerce',
+    category: 'fullstack',
     badge: 'Business Tool',
     icon: 'fa-receipt',
     gradient: 'from-violet-900 to-indigo-900',

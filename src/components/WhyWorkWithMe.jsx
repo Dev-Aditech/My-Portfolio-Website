@@ -17,7 +17,7 @@ function WhyWorkWithMe() {
 
           <div className="lg:col-span-7 space-y-8">
             <div>
-              <span className="text-brand-600 dark:text-brand-400 font-mono text-xs uppercase tracking-widest block mb-2">07. Professional Commitment</span>
+              <span className="text-brand-600 dark:text-brand-400 font-mono text-xs uppercase tracking-widest block mb-2">08 / Professional Commitment</span>
               <h2 className="text-3xl font-extrabold text-slate-900 dark:text-white tracking-tight">Why Work With Me?</h2>
             </div>
 
@@ -69,11 +69,11 @@ function WhyWorkWithMe() {
             </div>
             <h3 className="text-2xl font-bold text-slate-900 dark:text-white">Adisa Nureni Olaniyi — Resume</h3>
             <p className="text-sm text-slate-600 dark:text-dark-muted">
-              Frontend & Backend Developer with 3+ years experience building responsive web applications, educational platforms, and full-stack integrations.
+              Full Stack Web & Mobile App Developer building responsive web applications, fintech utilities, and full-stack integrations.
             </p>
             <div className="p-4 rounded-2xl bg-slate-50 dark:bg-dark-surface text-xs font-mono text-left space-y-2">
               <div><strong>Brand:</strong> Dev Aditech</div>
-              <div><strong>Location:</strong> Nigeria</div>
+              <div><strong>Location:</strong> Ikire, Osun State, Nigeria</div>
               <div><strong>GitHub:</strong> Dev-Aditech</div>
               <div><strong>Portfolio:</strong> adisanureni.vercel.app</div>
             </div>

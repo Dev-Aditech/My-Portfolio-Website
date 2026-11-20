@@ -1,18 +1,18 @@
 function About() {
   const infoRows = [
-    { label: 'Location:', value: 'Nigeria' },
+    { label: 'Location:', value: 'Ikire, Osun State, Nigeria' },
     { label: 'Experience:', value: '3+ Years (Since 2023)' },
-    { label: 'Core Expertise:', value: 'Frontend & Backend Dev' },
+    { label: 'Core Expertise:', value: 'Full Stack Web & Mobile' },
     { label: 'Specialty:', value: 'Responsive Web Apps' },
   ]
 
-  const badges = ['Responsive-First', 'Clean Architecture', 'Full-Stack Capable', 'Firebase Integration']
+  const badges = ['Responsive-First', 'Clean Architecture', 'Full-Stack Capable', 'Web & Mobile First']
 
   return (
     <section id="about" className="py-24 bg-slate-50 dark:bg-dark-bg">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center max-w-3xl mx-auto mb-16">
-          <span className="text-brand-600 dark:text-brand-400 font-mono text-xs uppercase tracking-widest block mb-2">01. About Me</span>
+          <span className="text-brand-600 dark:text-brand-400 font-mono text-xs uppercase tracking-widest block mb-2">01 / About Me</span>
           <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-900 dark:text-white tracking-tight">Crafting Web Solutions with Purpose</h2>
           <div className="w-16 h-1.5 bg-brand-600 mx-auto mt-4 rounded-full"></div>
         </div>
@@ -51,13 +51,13 @@ function About() {
 
           <div className="lg:col-span-7 space-y-6 text-slate-600 dark:text-dark-muted text-base leading-relaxed">
             <p className="text-lg font-medium text-slate-800 dark:text-slate-200">
-              Hello! I am Adisa Nureni Olaniyi, the developer behind <span className="text-brand-600 dark:text-brand-400 font-semibold">Dev Aditech</span>. Since I began my coding journey in 2023, I have been dedicated to mastering the craft of modern web development.
+              Hello! I am Adisa Nureni Olaniyi, widely known in the tech community as <span className="text-brand-600 dark:text-brand-400 font-semibold">Dev Aditech</span>. Based in Ikire, Osun State, Nigeria, I am a passionate Full Stack Web and Mobile App Developer focused on transforming ideas into fast, responsive, and production-ready software.
             </p>
             <p>
-              I build real-world websites and web applications with a strong emphasis on clean code, responsive layouts, performance optimization, and robust accessibility. Whether it's crafting educational platforms like Al-Fardyeen Academy, data services like ADITECHDATA, or e-commerce and banking apps, I approach every project with meticulous attention to detail.
+              My technical foundation is built on intensive self-directed engineering and structured certifications across <strong className="text-slate-800 dark:text-slate-200">freeCodeCamp</strong>, <strong className="text-slate-800 dark:text-slate-200">Sololearn</strong>, and <strong className="text-slate-800 dark:text-slate-200">Udemy</strong>, paired with hands-on real-world experience building full-stack platforms, fintech utilities, and modern web applications — from educational platforms like Al-Fardyeen Academy and data services like ADITECHDATA to e-commerce and banking apps.
             </p>
             <p>
-              My technical toolkit spans modern HTML5, CSS3, JavaScript, and React on the frontend, paired with Node.js, Express, Next.js API routes, and PHP on the backend — plus backend-as-a-service (BaaS) integration via Firebase for authentication, database management, and hosting. I believe in continuous learning, structured problem-solving, and building digital products that genuinely solve user problems.
+              My toolkit spans JavaScript, TypeScript, React.js, Next.js, Redux, and Tailwind CSS on the frontend, paired with Node.js, Express, Python, PHP, and Laravel on the backend — backed by MongoDB, MySQL, Firebase, and Supabase. I approach every project with clean code, responsive layouts, performance, and accessibility in mind, and I believe in continuous learning and building digital products that genuinely solve user problems.
             </p>
 
             <div className="pt-4 flex flex-wrap gap-4">

@@ -29,7 +29,7 @@ function Testimonials() {
     <section className="py-24 bg-white dark:bg-dark-surface border-t border-slate-200 dark:border-dark-border overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center max-w-3xl mx-auto mb-16">
-          <span className="text-brand-600 dark:text-brand-400 font-mono text-xs uppercase tracking-widest block mb-2">08. Client Feedback</span>
+          <span className="text-brand-600 dark:text-brand-400 font-mono text-xs uppercase tracking-widest block mb-2">09 / Client Feedback</span>
           <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-900 dark:text-white tracking-tight">Testimonials</h2>
           <div className="w-16 h-1.5 bg-brand-600 mx-auto mt-4 rounded-full"></div>
         </div>

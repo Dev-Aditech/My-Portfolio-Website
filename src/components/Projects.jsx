@@ -27,14 +27,18 @@ function Projects() {
 
   const filters = [
     { key: 'all', label: 'All Projects' },
-    { key: 'firebase', label: 'Firebase / BaaS' },
-    { key: 'ecommerce', label: 'E-Commerce & Apps' },
-    { key: 'frontend', label: 'Frontend / UI' },
+    { key: 'fullstack', label: 'Full Stack' },
+    { key: 'frontend', label: 'Frontend' },
+    { key: 'backend', label: 'Backend' },
+    { key: 'mobile', label: 'Mobile' },
   ]
+
+  // Older projects saved in Firebase used different category names; map them to the new filters.
+  const normalizeCategory = (category) => ({ firebase: 'fullstack', ecommerce: 'fullstack' }[category] || category)
 
   const normalizedQuery = query.trim().toLowerCase()
   const visibleProjects = projects
-    .filter((project) => activeFilter === 'all' || project.category === activeFilter)
+    .filter((project) => activeFilter === 'all' || normalizeCategory(project.category) === activeFilter)
     .filter((project) =>
       !normalizedQuery ||
       [project.title, project.description, project.badge, ...project.tags]
@@ -49,7 +53,7 @@ function Projects() {
     <section id="projects" className="py-24 bg-slate-50 dark:bg-dark-bg">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center max-w-3xl mx-auto mb-16">
-          <span className="text-brand-600 dark:text-brand-400 font-mono text-xs uppercase tracking-widest block mb-2">03. Portfolio Showcase</span>
+          <span className="text-brand-600 dark:text-brand-400 font-mono text-xs uppercase tracking-widest block mb-2">04 / Portfolio Showcase</span>
           <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-900 dark:text-white tracking-tight">Featured Projects</h2>
           <div className="w-16 h-1.5 bg-brand-600 mx-auto mt-4 rounded-full"></div>
         </div>
@@ -95,7 +99,14 @@ function Projects() {
               <div className="h-48 relative overflow-hidden">
                 <div className={`absolute inset-0 bg-linear-to-tr ${project.gradient}`}></div>
 
-                {project.liveUrl && (
+                {project.image ? (
+                  <img
+                    src={project.image}
+                    alt={`${project.title} preview`}
+                    loading="lazy"
+                    className="absolute inset-0 w-full h-full object-cover object-center"
+                  />
+                ) : project.liveUrl && (
                   <img
                     src={getScreenshotUrl(project.liveUrl)}
                     alt={`${project.title} preview`}

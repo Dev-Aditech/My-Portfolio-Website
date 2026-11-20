@@ -1,192 +1,151 @@
 import { useState, useEffect } from 'react'
-import emailjs from '@emailjs/browser'
+
+const WHATSAPP = '2348137565810'
+const EMAIL = 'adisanureni2023@gmail.com'
 
 function Contact() {
-  const [formData, setFormData] = useState({ name: '', email: '', subject: '', message: '' })
+  const [form, setForm] = useState({ name: '', email: '', subject: 'Full Stack Web Development', message: '' })
   const [toast, setToast] = useState(null)
-  const [isSending, setIsSending] = useState(false)
-  const [errors, setErrors] = useState({})
-  const [honeypot, setHoneypot] = useState('')
-  const [lastSent, setLastSent] = useState(0)
-  const MAX_MESSAGE = 1000
-
-  const validate = (data) => {
-    const next = {}
-    if (data.name.trim().length < 2) next.name = 'Please enter your name.'
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email.trim())) next.email = 'Please enter a valid email address.'
-    if (data.subject.trim().length < 3) next.subject = 'Please add a short subject.'
-    if (data.message.trim().length < 10) next.message = 'Message should be at least 10 characters.'
-    return next
-  }
 
   useEffect(() => {
     if (!toast) return
-    const timer = setTimeout(() => setToast(null), 4000)
-    return () => clearTimeout(timer)
+    const t = setTimeout(() => setToast(null), 3200)
+    return () => clearTimeout(t)
   }, [toast])
 
-  const handleChange = (event) => {
-    const { id, value } = event.target
-    setFormData((prev) => ({ ...prev, [id]: id === 'message' ? value.slice(0, MAX_MESSAGE) : value }))
-    if (errors[id]) setErrors((prev) => ({ ...prev, [id]: undefined }))
+  const handleChange = (e) => setForm((prev) => ({ ...prev, [e.target.id]: e.target.value }))
+
+  const handleEmail = (e) => {
+    e.preventDefault()
+    const name = form.name.trim()
+    const subject = encodeURIComponent(`${form.subject} - from ${name}`)
+    const body = encodeURIComponent(`Name: ${name}\nEmail: ${form.email.trim()}\n\nMessage:\n${form.message.trim()}`)
+    setToast('Opening your email client to send message...')
+    window.location.href = `mailto:${EMAIL}?subject=${subject}&body=${body}`
   }
 
-  const handleSubmit = (event) => {
-    event.preventDefault()
-
-    if (honeypot) return // bots fill hidden fields
-
-    const found = validate(formData)
-    if (Object.keys(found).length) {
-      setErrors(found)
-      setToast({ message: 'Please fix the highlighted fields.', type: 'error' })
-      return
-    }
-
-    if (Date.now() - lastSent < 30000) {
-      setToast({ message: 'Please wait a few seconds before sending another message.', type: 'error' })
-      return
-    }
-
-    setIsSending(true)
-
-    const templateParams = {
-      name: formData.name,
-      email: formData.email,
-      subject: formData.subject,
-      message: formData.message,
-      time: new Date().toLocaleString(),
-    }
-
-    emailjs
-      .send(
-        import.meta.env.VITE_EMAILJS_SERVICE_ID,
-        import.meta.env.VITE_EMAILJS_TEMPLATE_ID,
-        templateParams,
-        { publicKey: import.meta.env.VITE_EMAILJS_PUBLIC_KEY }
-      )
-      .then(() => {
-        setToast({ message: 'Thank you! Your message has been sent successfully.', type: 'success' })
-        setFormData({ name: '', email: '', subject: '', message: '' })
-        setErrors({})
-        setLastSent(Date.now())
-      })
-      .catch((error) => {
-        console.error('EmailJS error:', error)
-        setToast({ message: 'Something went wrong sending your message. Please try again or email me directly.', type: 'error' })
-      })
-      .finally(() => {
-        setIsSending(false)
-      })
+  const handleWhatsApp = () => {
+    const name = form.name.trim() || 'A Visitor'
+    const message = form.message.trim() || 'Hello Dev Aditech, I would like to connect regarding a project.'
+    const text = `Hello Adisa (Dev Aditech), my name is ${name}.\n*Inquiry:* ${form.subject}\n*Message:* ${message}`
+    setToast('Redirecting to WhatsApp...')
+    window.open(`https://wa.me/${WHATSAPP}?text=${encodeURIComponent(text)}`, '_blank', 'noopener,noreferrer')
   }
 
-  const copyEmail = () => {
-    navigator.clipboard.writeText('adisanureni2023@gmail.com')
-    setToast({ message: 'Email copied to clipboard!', type: 'success' })
-  }
+  const inputClass = 'w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-dark-surface border border-slate-200 dark:border-dark-border text-sm text-slate-900 dark:text-slate-100 focus:bg-white dark:focus:bg-dark-card focus:outline-none focus:ring-2 focus:ring-brand-600/20 focus:border-brand-600 transition-all'
+  const labelClass = 'block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5'
 
   return (
-    <section id="contact" className="py-24 bg-slate-50 dark:bg-dark-bg border-t border-slate-200 dark:border-dark-border">
+    <section id="contact" className="py-16 sm:py-24 bg-white dark:bg-dark-bg border-t border-slate-200 dark:border-dark-border">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center max-w-3xl mx-auto mb-16">
-          <span className="text-brand-600 dark:text-brand-400 font-mono text-xs uppercase tracking-widest block mb-2">09. Get In Touch</span>
-          <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-900 dark:text-white tracking-tight">Let's Build Something Meaningful</h2>
-          <div className="w-16 h-1.5 bg-brand-600 mx-auto mt-4 rounded-full"></div>
-        </div>
+        <div className="bg-white dark:bg-dark-card rounded-3xl border border-slate-200 dark:border-dark-border shadow-lg shadow-slate-200/40 dark:shadow-black/30 overflow-hidden">
+          <div className="grid grid-cols-1 lg:grid-cols-12">
 
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
-          <div className="lg:col-span-5 space-y-8">
-            <div className="p-8 rounded-3xl bg-white dark:bg-dark-card border border-slate-200 dark:border-dark-border shadow-sm space-y-6">
-              <h3 className="text-xl font-bold text-slate-900 dark:text-white">Contact Information</h3>
-              <p className="text-sm text-slate-600 dark:text-dark-muted leading-relaxed">
-                Available for employment opportunities, freelance projects, collaborations, and web development training. Feel free to reach out directly.
-              </p>
+            <div className="lg:col-span-5 bg-slate-900 text-white p-8 sm:p-10 flex flex-col justify-between">
+              <div>
+                <span className="inline-block px-3 py-1 rounded-full bg-brand-500/20 border border-brand-400/30 text-indigo-200 text-xs font-mono font-semibold mb-4">
+                  11 / Get In Touch
+                </span>
+                <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight">Ready to build your next web or mobile project?</h2>
+                <p className="text-slate-300 text-sm sm:text-base mt-3 leading-relaxed">
+                  I am open to full-time roles, frontend/full-stack contracts, and freelance software development opportunities. Reach out directly via email, WhatsApp, or LinkedIn.
+                </p>
 
-              <div className="space-y-4 pt-2">
-                <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 rounded-2xl bg-brand-600/10 text-brand-600 dark:text-brand-400 flex items-center justify-center text-lg">
-                    <i className="fa-solid fa-envelope"></i>
+                <div className="mt-8 space-y-4">
+                  <div className="flex items-center gap-3.5 group">
+                    <div className="w-10 h-10 rounded-xl bg-white/10 group-hover:bg-brand-600/30 transition-colors flex items-center justify-center text-indigo-300 shrink-0">
+                      <i className="fa-regular fa-envelope"></i>
+                    </div>
+                    <div className="min-w-0">
+                      <p className="text-xs text-slate-400">Email Address</p>
+                      <a href={`mailto:${EMAIL}`} className="text-sm font-semibold text-white hover:text-indigo-300 truncate block transition-colors">{EMAIL}</a>
+                    </div>
                   </div>
-                  <div>
-                    <span className="block text-xs font-mono text-slate-400 dark:text-dark-muted">Email Me</span>
-                    <button onClick={copyEmail} className="text-sm font-semibold text-slate-800 dark:text-slate-200 hover:text-brand-600 transition-colors flex items-center gap-2">
-                      <span>adisanureni2023@gmail.com</span>
-                      <i className="fa-regular fa-copy text-xs"></i>
-                    </button>
+                  <div className="flex items-center gap-3.5 group">
+                    <div className="w-10 h-10 rounded-xl bg-white/10 group-hover:bg-emerald-600/30 transition-colors flex items-center justify-center text-emerald-400 shrink-0">
+                      <i className="fa-brands fa-whatsapp"></i>
+                    </div>
+                    <div>
+                      <p className="text-xs text-slate-400">Phone &amp; WhatsApp</p>
+                      <a href={`https://wa.me/${WHATSAPP}`} target="_blank" rel="noopener noreferrer" className="text-sm font-semibold text-white hover:text-emerald-300 transition-colors">+234 813 756 5810</a>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-3.5">
+                    <div className="w-10 h-10 rounded-xl bg-white/10 flex items-center justify-center text-indigo-300 shrink-0">
+                      <i className="fa-solid fa-location-dot"></i>
+                    </div>
+                    <div>
+                      <p className="text-xs text-slate-400">Location</p>
+                      <p className="text-sm font-semibold text-white">Ikire, Osun State, Nigeria (Remote Ready)</p>
+                    </div>
                   </div>
                 </div>
+              </div>
 
-                <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 rounded-2xl bg-emerald-600/10 text-emerald-600 dark:text-emerald-400 flex items-center justify-center text-lg">
-                    <i className="fa-brands fa-whatsapp"></i>
-                  </div>
-                  <div>
-                    <span className="block text-xs font-mono text-slate-400 dark:text-dark-muted">WhatsApp</span>
-                    <a href="https://wa.me/2348137565810" target="_blank" rel="noopener noreferrer" className="text-sm font-semibold text-slate-800 dark:text-slate-200 hover:text-emerald-600 transition-colors">
-                      Chat on WhatsApp
-                    </a>
-                  </div>
-                </div>
-
-                <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 rounded-2xl bg-blue-600/10 text-blue-600 dark:text-blue-400 flex items-center justify-center text-lg">
-                    <i className="fa-brands fa-github"></i>
-                  </div>
-                  <div>
-                    <span className="block text-xs font-mono text-slate-400 dark:text-dark-muted">GitHub</span>
-                    <a href="https://github.com/Dev-Aditech" target="_blank" rel="noopener noreferrer" className="text-sm font-semibold text-slate-800 dark:text-slate-200 hover:text-blue-600 transition-colors">
-                      Dev-Aditech
-                    </a>
-                  </div>
-                </div>
+              <div className="mt-10 pt-6 border-t border-white/10 flex flex-wrap items-center gap-3">
+                <a href="https://www.linkedin.com/in/adisa-nureni-olaniyi" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-brand-600 hover:bg-brand-500 hover:-translate-y-0.5 text-white text-xs font-semibold transition-all">
+                  <i className="fa-brands fa-linkedin"></i>
+                  <span>Connect on LinkedIn</span>
+                </a>
+                <a href={`https://wa.me/${WHATSAPP}`} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 hover:-translate-y-0.5 text-white text-xs font-semibold transition-all">
+                  <i className="fa-brands fa-whatsapp"></i>
+                  <span>WhatsApp</span>
+                </a>
               </div>
             </div>
-          </div>
 
-          <div className="lg:col-span-7">
-            <form onSubmit={handleSubmit} noValidate className="p-8 rounded-3xl bg-white dark:bg-dark-card border border-slate-200 dark:border-dark-border shadow-sm space-y-6">
-              <input type="text" name="website" tabIndex={-1} autoComplete="off" aria-hidden="true" value={honeypot} onChange={(e) => setHoneypot(e.target.value)} className="hidden" />
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                <div className="space-y-2">
-                  <label htmlFor="name" className="block text-xs font-semibold text-slate-700 dark:text-slate-300 uppercase tracking-wider">Your Name</label>
-                  <input type="text" id="name" value={formData.name} onChange={handleChange} placeholder="Adisa Nureni" aria-invalid={!!errors.name} className={`w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-dark-surface border ${errors.name ? 'border-rose-500' : 'border-slate-200 dark:border-dark-border'} text-slate-800 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-brand-500 text-sm`} />
-                  {errors.name && <p className="text-xs text-rose-500">{errors.name}</p>}
+            <div className="lg:col-span-7 p-8 sm:p-10">
+              <h3 className="text-xl font-bold text-slate-900 dark:text-white">Send a Direct Message</h3>
+              <p className="text-sm text-slate-500 dark:text-dark-muted mt-1">Fill out the details below and send instantly via Email or WhatsApp.</p>
+
+              <form onSubmit={handleEmail} className="mt-6 space-y-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div>
+                    <label htmlFor="name" className={labelClass}>Your Name *</label>
+                    <input type="text" id="name" required value={form.name} onChange={handleChange} placeholder="e.g. Sarah Johnson" className={inputClass} />
+                  </div>
+                  <div>
+                    <label htmlFor="email" className={labelClass}>Your Email *</label>
+                    <input type="email" id="email" required value={form.email} onChange={handleChange} placeholder="you@company.com" className={inputClass} />
+                  </div>
                 </div>
-                <div className="space-y-2">
-                  <label htmlFor="email" className="block text-xs font-semibold text-slate-700 dark:text-slate-300 uppercase tracking-wider">Your Email</label>
-                  <input type="email" id="email" value={formData.email} onChange={handleChange} placeholder="name@example.com" aria-invalid={!!errors.email} className={`w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-dark-surface border ${errors.email ? 'border-rose-500' : 'border-slate-200 dark:border-dark-border'} text-slate-800 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-brand-500 text-sm`} />
-                  {errors.email && <p className="text-xs text-rose-500">{errors.email}</p>}
+
+                <div>
+                  <label htmlFor="subject" className={labelClass}>Inquiry Type</label>
+                  <select id="subject" value={form.subject} onChange={handleChange} className={inputClass}>
+                    <option>Full Stack Web Development</option>
+                    <option>Frontend / React / Next.js Role</option>
+                    <option>Mobile App Development</option>
+                    <option>Freelance Project Collaboration</option>
+                  </select>
                 </div>
-              </div>
 
-              <div className="space-y-2">
-                <label htmlFor="subject" className="block text-xs font-semibold text-slate-700 dark:text-slate-300 uppercase tracking-wider">Subject</label>
-                <input type="text" id="subject" value={formData.subject} onChange={handleChange} placeholder="Project Inquiry / Job Opportunity / Training" aria-invalid={!!errors.subject} className={`w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-dark-surface border ${errors.subject ? 'border-rose-500' : 'border-slate-200 dark:border-dark-border'} text-slate-800 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-brand-500 text-sm`} />
-                  {errors.subject && <p className="text-xs text-rose-500">{errors.subject}</p>}
-              </div>
-
-              <div className="space-y-2">
-                <label htmlFor="message" className="block text-xs font-semibold text-slate-700 dark:text-slate-300 uppercase tracking-wider">Message</label>
-                <textarea id="message" rows="5" value={formData.message} onChange={handleChange} placeholder="Tell me about your project or inquiry..." aria-invalid={!!errors.message} className={`w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-dark-surface border ${errors.message ? 'border-rose-500' : 'border-slate-200 dark:border-dark-border'} text-slate-800 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-brand-500 text-sm resize-none`}></textarea>
-                <div className="flex justify-between text-xs">
-                  <span className="text-rose-500">{errors.message}</span>
-                  <span className="text-slate-400 dark:text-dark-muted font-mono">{formData.message.length}/{MAX_MESSAGE}</span>
+                <div>
+                  <label htmlFor="message" className={labelClass}>Project Details or Message *</label>
+                  <textarea id="message" rows="4" required value={form.message} onChange={handleChange} placeholder="Tell me about your project timeline, requirements, or role..." className={inputClass}></textarea>
                 </div>
-              </div>
 
-              <button type="submit" disabled={isSending} className="w-full py-4 rounded-xl bg-brand-600 hover:bg-brand-700 disabled:opacity-60 disabled:cursor-not-allowed text-white font-semibold text-sm shadow-lg shadow-brand-500/25 transition-all flex items-center justify-center gap-2">
-                <span>{isSending ? 'Sending...' : 'Send Message'}</span>
-                <i className={`fa-solid ${isSending ? 'fa-spinner fa-spin' : 'fa-paper-plane'} text-xs`}></i>
-              </button>
-            </form>
+                <div className="flex flex-col sm:flex-row gap-3 pt-2">
+                  <button type="submit" className="flex-1 inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl bg-brand-600 hover:bg-brand-700 hover:-translate-y-0.5 text-white font-semibold text-sm shadow-sm hover:shadow-md transition-all duration-300">
+                    <i className="fa-regular fa-paper-plane"></i>
+                    <span>Send via Email</span>
+                  </button>
+                  <button type="button" onClick={handleWhatsApp} className="flex-1 inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 hover:-translate-y-0.5 text-white font-semibold text-sm shadow-sm hover:shadow-md transition-all duration-300">
+                    <i className="fa-brands fa-whatsapp text-base"></i>
+                    <span>Send via WhatsApp</span>
+                  </button>
+                </div>
+              </form>
+            </div>
+
           </div>
         </div>
       </div>
 
       {toast && (
-        <div className={`fixed bottom-6 right-6 z-50 px-5 py-3.5 rounded-xl shadow-xl text-sm font-semibold text-white flex items-center gap-2 max-w-sm ${toast.type === 'error' ? 'bg-rose-600' : 'bg-emerald-600'}`}>
-          <i className={`fa-solid ${toast.type === 'error' ? 'fa-circle-exclamation' : 'fa-circle-check'}`}></i>
-          <span>{toast.message}</span>
+        <div className="fixed bottom-6 right-6 z-50 px-5 py-3.5 rounded-xl shadow-xl text-sm font-semibold text-white bg-slate-900 border border-slate-700 flex items-center gap-2.5 max-w-sm" style={{ animation: 'fadeSlideUp 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards' }}>
+          <i className="fa-solid fa-circle-check text-emerald-400"></i>
+          <span>{toast}</span>
         </div>
       )}
     </section>

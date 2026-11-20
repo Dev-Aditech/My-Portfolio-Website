@@ -1,8 +1,8 @@
 function Stats() {
   const stats = [
-    { value: '3+', label: 'Years Learning & Building' },
+    { value: '20+', label: 'Core Technologies' },
     { value: '20+', label: 'Projects & Experiments' },
-    { value: 'Multiple', label: 'Real-world Web Apps' },
+    { value: '3+', label: 'Industry Roles' },
     { value: '100%', label: 'Responsive Design Focus' },
   ]
 

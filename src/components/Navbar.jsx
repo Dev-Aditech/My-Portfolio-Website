@@ -12,7 +12,7 @@ function Navbar({ isDark, toggleTheme }) {
   }, [])
 
   useEffect(() => {
-    const ids = ['home', 'about', 'skills', 'projects', 'services', 'experience', 'contact']
+    const ids = ['home', 'about', 'services', 'skills', 'projects', 'experience', 'process', 'learning', 'faq', 'contact']
     const sections = ids.map((id) => document.getElementById(id)).filter(Boolean)
     if (!sections.length || !('IntersectionObserver' in window)) return
     const observer = new IntersectionObserver(
@@ -37,10 +37,12 @@ function Navbar({ isDark, toggleTheme }) {
   const navLinks = [
     { name: 'Home', href: '#home' },
     { name: 'About', href: '#about' },
+    { name: 'Services', href: '#services' },
     { name: 'Skills', href: '#skills' },
     { name: 'Projects', href: '#projects' },
-    { name: 'Services', href: '#services' },
     { name: 'Experience', href: '#experience' },
+    { name: 'Learning', href: '#learning' },
+    { name: 'FAQ', href: '#faq' },
     { name: 'Contact', href: '#contact' },
   ]
 
@@ -60,7 +62,7 @@ function Navbar({ isDark, toggleTheme }) {
 
         <nav className="hidden md:flex items-center gap-1 lg:gap-2">
           {navLinks.map((link) => (
-            <a key={link.name} href={link.href} aria-current={activeSection === link.href.slice(1) ? 'true' : undefined} className={`nav-link px-3 py-2 text-sm font-medium rounded-lg transition-colors ${activeSection === link.href.slice(1) ? 'text-brand-600 dark:text-brand-400 bg-brand-600/10' : 'text-slate-600 dark:text-slate-300 hover:text-brand-600 dark:hover:text-brand-400'}`}>
+            <a key={link.name} href={link.href} aria-current={activeSection === link.href.slice(1) ? 'true' : undefined} className={`nav-link px-3 py-2 text-sm font-medium rounded-lg transition-colors duration-300 ${activeSection === link.href.slice(1) ? 'text-brand-600 dark:text-brand-400' : 'text-slate-600 dark:text-slate-300 hover:text-brand-600 dark:hover:text-brand-400'}`}>
               {link.name}
             </a>
           ))}

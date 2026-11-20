@@ -1,0 +1,1522 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Adisa (Dev Aditech) Nureni Olaniyi | Full Stack Web & Mobile App Developer</title>
+  <meta name="description" content="Portfolio of Adisa (Dev Aditech) Nureni Olaniyi — Full Stack Web and Mobile App Developer specializing in JavaScript, TypeScript, React.js, Next.js, Node.js, Python, PHP, and Laravel." />
+  
+  <!-- Google Fonts: Inter & JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+  
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace'],
+          },
+          colors: {
+            brand: {
+              50: '#eff6ff',
+              100: '#dbeafe',
+              500: '#3b82f6',
+              600: '#2563eb',
+              700: '#1d4ed8',
+              900: '#0f172a',
+            }
+          }
+        }
+      }
+    };
+  </script>
+
+  <style>
+    /* Subtle background dot matrix on pure white */
+    .bg-grid-pattern {
+      background-color: #ffffff;
+      background-image: radial-gradient(#e2e8f0 1px, transparent 1px);
+      background-size: 24px 24px;
+    }
+
+    /* Keyframe Animations for Hero, Navbar, and Ambient Elements */
+    @keyframes fadeSlideDown {
+      0% {
+        opacity: 0;
+        transform: translateY(-16px);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes fadeSlideUp {
+      0% {
+        opacity: 0;
+        transform: translateY(24px);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes floatSlow {
+      0%, 100% {
+        transform: translateY(0px);
+      }
+      50% {
+        transform: translateY(-8px);
+      }
+    }
+
+    @keyframes pulseGlow {
+      0%, 100% {
+        box-shadow: 0 0 0 0 rgba(37, 99, 235, 0.25);
+      }
+      50% {
+        box-shadow: 0 0 0 10px rgba(37, 99, 235, 0);
+      }
+    }
+
+    /* Navbar entrance & scroll shrink transition */
+    .navbar-animate {
+      animation: fadeSlideDown 0.65s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+      transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .navbar-scrolled {
+      background-color: rgba(255, 255, 255, 0.96);
+      box-shadow: 0 10px 30px -10px rgba(15, 23, 42, 0.08);
+      border-bottom-color: rgba(226, 232, 240, 0.95);
+    }
+
+    /* Animated underline for nav links */
+    .nav-link-animated {
+      position: relative;
+    }
+    .nav-link-animated::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      bottom: -4px;
+      width: 0%;
+      height: 2px;
+      background-color: #2563eb;
+      border-radius: 9999px;
+      transition: width 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .nav-link-animated:hover::after,
+    .nav-link-animated.active-nav::after {
+      width: 100%;
+    }
+
+    /* Hero Staggered Entrance */
+    .hero-stagger-1 { opacity: 0; animation: fadeSlideUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.1s forwards; }
+    .hero-stagger-2 { opacity: 0; animation: fadeSlideUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.22s forwards; }
+    .hero-stagger-3 { opacity: 0; animation: fadeSlideUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.34s forwards; }
+    .hero-stagger-4 { opacity: 0; animation: fadeSlideUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.46s forwards; }
+    .hero-stagger-5 { opacity: 0; animation: fadeSlideUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.58s forwards; }
+    .hero-card-float {
+      opacity: 0;
+      animation: fadeSlideUp 0.85s cubic-bezier(0.16, 1, 0.3, 1) 0.35s forwards, floatSlow 6s ease-in-out 1.2s infinite;
+    }
+
+    /* Smooth reveal transitions for sections and staggered cards */
+    .reveal-section {
+      opacity: 0;
+      transform: translateY(26px);
+      transition: opacity 0.75s cubic-bezier(0.16, 1, 0.3, 1), transform 0.75s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .reveal-section.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .stagger-card {
+      opacity: 0;
+      transform: translateY(18px) scale(0.98);
+      transition: opacity 0.55s cubic-bezier(0.16, 1, 0.3, 1), transform 0.55s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.25s ease, box-shadow 0.25s ease;
+    }
+    .reveal-section.visible .stagger-card {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+
+    /* Interactive Card Hover Elevation */
+    .hover-lift {
+      transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.3s ease;
+    }
+    .hover-lift:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 18px 35px -12px rgba(15, 23, 42, 0.09);
+    }
+
+    /* FAQ Accordion Smooth Transition */
+    .faq-answer {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease, padding 0.3s ease;
+      opacity: 0;
+    }
+    .faq-item.open .faq-answer {
+      max-height: 220px;
+      opacity: 1;
+    }
+    .faq-item.open .faq-chevron {
+      transform: rotate(180deg);
+    }
+
+    /* Custom scrollbar */
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #ffffff;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #cbd5e1;
+      border-radius: 9999px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #94a3b8;
+    }
+  </style>
+</head>
+<body class="bg-white text-slate-900 font-sans antialiased selection:bg-blue-600 selection:text-white">
+
+  <!-- Top Scroll Progress Indicator -->
+  <div id="scroll-progress" class="fixed top-0 left-0 h-[3px] bg-gradient-to-r from-blue-600 via-sky-500 to-emerald-500 z-50 transition-all duration-150" style="width: 0%;"></div>
+
+  <!-- Toast Notification Container (Replaces alert) -->
+  <div id="toast-container" class="fixed bottom-5 right-5 z-50 flex flex-col gap-2 pointer-events-none"></div>
+
+  <!-- Sticky Navigation Bar -->
+  <header id="main-navbar" class="sticky top-0 z-40 w-full bg-white/85 backdrop-blur-md border-b border-slate-200/70 navbar-animate">
+    <div id="navbar-inner" class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 h-16 sm:h-[72px] flex items-center justify-between transition-all duration-300">
+      <!-- Brand Logo -->
+      <a href="#home" class="flex items-center gap-2.5 group">
+        <div class="w-9 h-9 rounded-xl bg-slate-900 text-white flex items-center justify-center font-mono font-bold text-sm shadow-sm group-hover:bg-blue-600 group-hover:scale-105 group-hover:rotate-3 transition-all duration-300">
+          DA
+        </div>
+        <div class="flex flex-col">
+          <span class="font-bold text-slate-900 text-sm sm:text-base tracking-tight leading-none group-hover:text-blue-600 transition-colors">Dev Aditech</span>
+          <span class="text-[11px] font-medium text-slate-500 mt-0.5">Adisa Nureni Olaniyi</span>
+        </div>
+      </a>
+
+      <!-- Desktop Navigation -->
+      <nav class="hidden lg:flex items-center gap-6 text-sm font-medium text-slate-600">
+        <a href="#about" class="nav-link-animated hover:text-blue-600 transition-colors">About</a>
+        <a href="#services" class="nav-link-animated hover:text-blue-600 transition-colors">Services</a>
+        <a href="#skills" class="nav-link-animated hover:text-blue-600 transition-colors">Tech Stack</a>
+        <a href="#experience" class="nav-link-animated hover:text-blue-600 transition-colors">Experience</a>
+        <a href="#process" class="nav-link-animated hover:text-blue-600 transition-colors">Process</a>
+        <a href="#learning" class="nav-link-animated hover:text-blue-600 transition-colors">Learning</a>
+        <a href="#projects" class="nav-link-animated hover:text-blue-600 transition-colors">Projects</a>
+        <a href="#faq" class="nav-link-animated hover:text-blue-600 transition-colors">FAQ</a>
+      </nav>
+
+      <!-- Desktop CTA & Mobile Menu Toggle -->
+      <div class="flex items-center gap-3">
+        <a href="https://wa.me/2348137565810?text=Hello%20Dev%20Aditech%2C%20I%20visited%20your%20portfolio%20and%20would%20like%20to%20discuss%20a%20project." 
+           target="_blank" rel="noopener noreferrer"
+           class="hidden sm:inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-slate-900 hover:bg-blue-600 hover:-translate-y-0.5 text-white text-xs sm:text-sm font-semibold transition-all duration-300 shadow-sm hover:shadow-md">
+          <i class="fa-brands fa-whatsapp text-emerald-400 text-base"></i>
+          <span>Hire Me</span>
+        </a>
+
+        <button id="mobile-menu-btn" aria-label="Toggle Menu" class="lg:hidden p-2.5 rounded-xl border border-slate-200 text-slate-700 hover:bg-slate-50 active:scale-95 transition-all">
+          <i class="fa-solid fa-bars text-base transition-transform duration-300" id="mobile-menu-icon"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- Mobile Navigation Dropdown with Smooth Max-Height Transition -->
+    <div id="mobile-menu" class="lg:hidden max-h-0 overflow-hidden opacity-0 bg-white border-b border-slate-200 px-4 transition-all duration-300 ease-in-out shadow-lg">
+      <div class="pt-2 pb-5 space-y-1.5">
+        <a href="#about" class="mobile-link block px-3 py-2.5 rounded-xl text-sm font-medium text-slate-700 hover:bg-slate-50 hover:text-blue-600 hover:translate-x-1 transition-all">About</a>
+        <a href="#services" class="mobile-link block px-3 py-2.5 rounded-xl text-sm font-medium text-slate-700 hover:bg-slate-50 hover:text-blue-600 hover:translate-x-1 transition-all">Services</a>
+        <a href="#skills" class="mobile-link block px-3 py-2.5 rounded-xl text-sm font-medium text-slate-700 hover:bg-slate-50 hover:text-blue-600 hover:translate-x-1 transition-all">Tech Stack</a>
+        <a href="#experience" class="mobile-link block px-3 py-2.5 rounded-xl text-sm font-medium text-slate-700 hover:bg-slate-50 hover:text-blue-600 hover:translate-x-1 transition-all">Experience</a>
+        <a href="#process" class="mobile-link block px-3 py-2.5 rounded-xl text-sm font-medium text-slate-700 hover:bg-slate-50 hover:text-blue-600 hover:translate-x-1 transition-all">Workflow Process</a>
+        <a href="#learning" class="mobile-link block px-3 py-2.5 rounded-xl text-sm font-medium text-slate-700 hover:bg-slate-50 hover:text-blue-600 hover:translate-x-1 transition-all">Learning & Courses</a>
+        <a href="#projects" class="mobile-link block px-3 py-2.5 rounded-xl text-sm font-medium text-slate-700 hover:bg-slate-50 hover:text-blue-600 hover:translate-x-1 transition-all">Projects</a>
+        <a href="#faq" class="mobile-link block px-3 py-2.5 rounded-xl text-sm font-medium text-slate-700 hover:bg-slate-50 hover:text-blue-600 hover:translate-x-1 transition-all">FAQ</a>
+        <a href="#contact" class="mobile-link block px-3 py-2.5 rounded-xl text-sm font-medium text-slate-700 hover:bg-slate-50 hover:text-blue-600 hover:translate-x-1 transition-all">Contact</a>
+        <div class="pt-2">
+          <a href="https://wa.me/2348137565810" target="_blank" rel="noopener noreferrer"
+             class="w-full flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-slate-900 hover:bg-blue-600 text-white text-sm font-semibold transition-colors">
+            <i class="fa-brands fa-whatsapp text-emerald-400"></i>
+            <span>Chat on WhatsApp</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section id="home" class="relative bg-grid-pattern border-b border-slate-200/80 overflow-hidden">
+    <!-- Subtle Ambient Gradient Accents on White -->
+    <div class="pointer-events-none absolute -top-24 -right-24 w-96 h-96 rounded-full bg-blue-50/80 blur-3xl"></div>
+    <div class="pointer-events-none absolute bottom-0 -left-24 w-80 h-80 rounded-full bg-emerald-50/70 blur-3xl"></div>
+
+    <div class="relative max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-14 sm:py-20 lg:py-24">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-center">
+        
+        <!-- Hero Left Column -->
+        <div class="lg:col-span-7 space-y-6">
+          <!-- Open to Work Status Pill -->
+          <div class="hero-stagger-1 inline-flex flex-wrap items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs font-semibold shadow-2xs">
+            <span class="relative flex h-2.5 w-2.5">
+              <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+              <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-600"></span>
+            </span>
+            <span>#OPENTOWORK — Senior Web, Frontend & Full Stack Developer</span>
+          </div>
+
+          <div class="hero-stagger-2 space-y-3">
+            <p class="text-sm font-mono font-semibold text-blue-600 tracking-wide uppercase">
+              Ikire, Osun State, Nigeria · Available Globally (Remote)
+            </p>
+            <h1 class="text-3xl sm:text-5xl lg:text-[3.25rem] font-extrabold text-slate-900 tracking-tight leading-[1.12]">
+              Adisa <span class="text-blue-600">(Dev Aditech)</span> Nureni Olaniyi
+            </h1>
+            <h2 class="text-lg sm:text-2xl font-semibold text-slate-700 flex flex-wrap items-center gap-2">
+              <span>Full Stack Web &amp;</span>
+              <span id="typed-role" class="text-blue-600 border-r-2 border-blue-600 pr-1">Mobile App Developer</span>
+            </h2>
+          </div>
+
+          <p class="hero-stagger-3 text-slate-600 text-base sm:text-lg leading-relaxed max-w-2xl">
+            I design, architect, and ship scalable web and mobile applications using modern JavaScript, TypeScript, React.js, Next.js, Node.js, Python, PHP, and Laravel. Dedicated to clean code, intuitive user interfaces, and continuous engineering growth.
+          </p>
+
+          <!-- Primary Hero CTAs -->
+          <div class="hero-stagger-4 flex flex-wrap items-center gap-3.5 pt-2">
+            <a href="#projects" class="group inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl bg-blue-600 hover:bg-blue-700 hover:-translate-y-0.5 text-white font-semibold text-sm shadow-sm hover:shadow-md transition-all duration-300">
+              <span>Explore My Projects</span>
+              <i class="fa-solid fa-arrow-right text-xs group-hover:translate-x-1 transition-transform"></i>
+            </a>
+            <a href="#contact" class="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl bg-white hover:bg-slate-50 hover:-translate-y-0.5 text-slate-900 border border-slate-300 font-semibold text-sm transition-all duration-300">
+              <i class="fa-regular fa-envelope text-slate-600"></i>
+              <span>Contact Me</span>
+            </a>
+            <a href="https://www.linkedin.com/in/adisa-nureni-olaniyi" target="_blank" rel="noopener noreferrer"
+               aria-label="LinkedIn Profile"
+               class="inline-flex items-center justify-center gap-2 px-4 py-3.5 rounded-xl bg-slate-50 hover:bg-blue-50 hover:-translate-y-0.5 text-slate-700 hover:text-blue-700 border border-slate-200 font-semibold text-sm transition-all duration-300">
+              <i class="fa-brands fa-linkedin text-blue-600 text-base"></i>
+              <span>LinkedIn</span>
+            </a>
+          </div>
+
+          <!-- Quick Contact & Network Strip -->
+          <div class="hero-stagger-5 pt-4 flex flex-wrap items-center gap-x-6 gap-y-2 text-xs sm:text-sm text-slate-500 border-t border-slate-200/80">
+            <button onclick="copyText('adisanureni2023@gmail.com', 'Email address')" class="inline-flex items-center gap-2 hover:text-slate-900 transition-colors">
+              <i class="fa-regular fa-envelope text-blue-600"></i>
+              <span>adisanureni2023@gmail.com</span>
+              <i class="fa-regular fa-copy text-[11px] text-slate-400"></i>
+            </button>
+            <button onclick="copyText('+2348137565810', 'Phone number')" class="inline-flex items-center gap-2 hover:text-slate-900 transition-colors">
+              <i class="fa-solid fa-phone text-emerald-600"></i>
+              <span>+234 813 756 5810</span>
+              <i class="fa-regular fa-copy text-[11px] text-slate-400"></i>
+            </button>
+            <span class="inline-flex items-center gap-1.5 font-medium text-slate-700">
+              <i class="fa-solid fa-users text-blue-600"></i>
+              <span>5,421+ LinkedIn Followers</span>
+            </span>
+          </div>
+        </div>
+
+        <!-- Hero Right Column: Floating Developer Profile & Code Card -->
+        <div class="lg:col-span-5 hero-card-float">
+          <div class="bg-white rounded-2xl border border-slate-200 shadow-xl shadow-slate-200/60 overflow-hidden hover:border-blue-300 transition-colors duration-300">
+            <!-- Top Developer Banner -->
+            <div class="bg-slate-900 px-6 py-5 text-white flex items-center justify-between">
+              <div class="flex items-center gap-3.5">
+                <div class="relative">
+                  <div class="w-14 h-14 rounded-full bg-gradient-to-tr from-blue-600 to-emerald-500 p-0.5">
+                    <div class="w-full h-full rounded-full bg-slate-800 flex items-center justify-center font-bold text-lg text-white">
+                      AN
+                    </div>
+                  </div>
+                  <span class="absolute bottom-0 right-0 w-3.5 h-3.5 rounded-full bg-emerald-500 border-2 border-slate-900" title="Open to Work"></span>
+                </div>
+                <div>
+                  <h3 class="font-bold text-base leading-tight">Adisa Nureni Olaniyi</h3>
+                  <p class="text-xs text-blue-300 font-mono mt-0.5">@DevAditech</p>
+                </div>
+              </div>
+              <span class="px-2.5 py-1 rounded-lg bg-emerald-500/20 border border-emerald-400/30 text-emerald-300 text-[11px] font-semibold">
+                #OPENTOWORK
+              </span>
+            </div>
+
+            <!-- Clean Code Snippet Preview -->
+            <div class="p-5 bg-slate-50 border-b border-slate-200 font-mono text-xs leading-relaxed overflow-x-auto">
+              <div class="flex items-center gap-1.5 mb-3">
+                <span class="w-2.5 h-2.5 rounded-full bg-rose-400"></span>
+                <span class="w-2.5 h-2.5 rounded-full bg-amber-400"></span>
+                <span class="w-2.5 h-2.5 rounded-full bg-emerald-400"></span>
+                <span class="ml-2 text-[11px] text-slate-400">developer.config.ts</span>
+              </div>
+              <pre class="text-slate-700"><code><span class="text-blue-600">const</span> <span class="text-slate-900 font-semibold">devAditech</span> = {
+  name: <span class="text-emerald-700">"Adisa Nureni Olaniyi"</span>,
+  role: <span class="text-emerald-700">"Full Stack Web & Mobile Dev"</span>,
+  location: <span class="text-emerald-700">"Ikire, Osun State, Nigeria"</span>,
+  stack: [<span class="text-emerald-700">"React"</span>, <span class="text-emerald-700">"Next.js"</span>, <span class="text-emerald-700">"Node"</span>, <span class="text-emerald-700">"Python"</span>, <span class="text-emerald-700">"Laravel"</span>],
+  learning: [<span class="text-emerald-700">"freeCodeCamp"</span>, <span class="text-emerald-700">"Sololearn"</span>, <span class="text-emerald-700">"Udemy"</span>],
+  availableForHire: <span class="text-blue-600 font-semibold">true</span>
+};</code></pre>
+            </div>
+
+            <!-- Key Highlights Grid -->
+            <div class="p-5 bg-white grid grid-cols-3 gap-3 text-center">
+              <div class="p-3 rounded-xl bg-slate-50 border border-slate-100 hover:border-blue-200 transition-colors">
+                <p class="text-lg sm:text-xl font-extrabold text-slate-900">17+</p>
+                <p class="text-[11px] font-medium text-slate-500 mt-0.5">Core Technologies</p>
+              </div>
+              <div class="p-3 rounded-xl bg-slate-50 border border-slate-100 hover:border-blue-200 transition-colors">
+                <p class="text-lg sm:text-xl font-extrabold text-blue-600">3+</p>
+                <p class="text-[11px] font-medium text-slate-500 mt-0.5">Industry Roles</p>
+              </div>
+              <div class="p-3 rounded-xl bg-slate-50 border border-slate-100 hover:border-blue-200 transition-colors">
+                <p class="text-lg sm:text-xl font-extrabold text-emerald-600">100%</p>
+                <p class="text-[11px] font-medium text-slate-500 mt-0.5">Client Focus</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- About Section -->
+  <section id="about" class="py-16 sm:py-20 bg-white border-b border-slate-100 reveal-section">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
+        <div class="lg:col-span-4">
+          <span class="text-xs font-mono font-semibold uppercase tracking-wider text-blue-600">01 / About Me</span>
+          <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 mt-2 tracking-tight">
+            Building Reliable Digital Solutions From Frontend to Backend
+          </h2>
+        </div>
+        <div class="lg:col-span-8 space-y-5 text-slate-600 text-base leading-relaxed">
+          <p>
+            Hello! I am <strong class="text-slate-900 font-semibold">Adisa Nureni Olaniyi</strong>, widely known in the tech community as <strong class="text-blue-600 font-semibold">Dev Aditech</strong>. Based in Ikire, Osun State, Nigeria, I am a passionate Full Stack Web and Mobile App Developer focused on transforming ideas into fast, responsive, and production-ready software.
+          </p>
+          <p>
+            My technical foundation is built on intensive self-directed engineering and structured certifications across <strong class="text-slate-900">freeCodeCamp</strong>, <strong class="text-slate-900">Sololearn</strong>, and <strong class="text-slate-900">Udemy</strong>, paired with hands-on real-world experience building full-stack platforms, fintech utilities, and modern web applications.
+          </p>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
+            <div class="stagger-card hover-lift p-4 rounded-xl bg-slate-50 border border-slate-200/80 flex items-start gap-3.5" style="transition-delay: 100ms;">
+              <div class="w-10 h-10 rounded-lg bg-blue-100 text-blue-600 flex items-center justify-center shrink-0">
+                <i class="fa-solid fa-layer-group"></i>
+              </div>
+              <div>
+                <h3 class="font-bold text-slate-900 text-sm">End-to-End Architecture</h3>
+                <p class="text-xs text-slate-600 mt-1">Seamless integration from pixel-perfect React &amp; Next.js interfaces to secure REST APIs and relational/NoSQL databases.</p>
+              </div>
+            </div>
+            <div class="stagger-card hover-lift p-4 rounded-xl bg-slate-50 border border-slate-200/80 flex items-start gap-3.5" style="transition-delay: 220ms;">
+              <div class="w-10 h-10 rounded-lg bg-emerald-100 text-emerald-600 flex items-center justify-center shrink-0">
+                <i class="fa-solid fa-mobile-screen-button"></i>
+              </div>
+              <div>
+                <h3 class="font-bold text-slate-900 text-sm">Web &amp; Mobile First</h3>
+                <p class="text-xs text-slate-600 mt-1">Crafting responsive, accessible experiences engineered to perform smoothly on every screen size and connection speed.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- NEW SECTION: What I Do / Services -->
+  <section id="services" class="py-16 sm:py-20 bg-slate-50/60 border-b border-slate-200/80 reveal-section">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="max-w-2xl mb-12">
+        <span class="text-xs font-mono font-semibold uppercase tracking-wider text-blue-600">02 / Services &amp; Capabilities</span>
+        <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 mt-2 tracking-tight">
+          How I Help Startups, Businesses &amp; Teams
+        </h2>
+        <p class="text-slate-600 text-sm sm:text-base mt-2">
+          Tailored engineering services combining clean user experience design with reliable full-stack infrastructure.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <!-- Service 1 -->
+        <div class="stagger-card hover-lift bg-white rounded-2xl border border-slate-200 p-6 flex flex-col justify-between" style="transition-delay: 80ms;">
+          <div>
+            <div class="w-11 h-11 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center text-lg mb-4">
+              <i class="fa-solid fa-laptop-code"></i>
+            </div>
+            <h3 class="text-base font-bold text-slate-900">Full Stack Web Apps</h3>
+            <p class="text-xs sm:text-sm text-slate-600 mt-2 leading-relaxed">
+              Complete web applications built with React, Next.js, Node.js, Python, and Laravel—from database schema to responsive UI.
+            </p>
+          </div>
+          <div class="mt-4 pt-3 border-t border-slate-100 text-[11px] font-mono text-blue-600 font-semibold">
+            React · Next.js · Node · Laravel
+          </div>
+        </div>
+
+        <!-- Service 2 -->
+        <div class="stagger-card hover-lift bg-white rounded-2xl border border-slate-200 p-6 flex flex-col justify-between" style="transition-delay: 160ms;">
+          <div>
+            <div class="w-11 h-11 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center text-lg mb-4">
+              <i class="fa-solid fa-mobile-screen"></i>
+            </div>
+            <h3 class="text-base font-bold text-slate-900">Mobile App Development</h3>
+            <p class="text-xs sm:text-sm text-slate-600 mt-2 leading-relaxed">
+              Cross-platform mobile experiences and progressive web apps (PWAs) designed for smooth touch interaction and offline resilience.
+            </p>
+          </div>
+          <div class="mt-4 pt-3 border-t border-slate-100 text-[11px] font-mono text-emerald-600 font-semibold">
+            React Native · PWA · Responsive UI
+          </div>
+        </div>
+
+        <!-- Service 3 -->
+        <div class="stagger-card hover-lift bg-white rounded-2xl border border-slate-200 p-6 flex flex-col justify-between" style="transition-delay: 240ms;">
+          <div>
+            <div class="w-11 h-11 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center text-lg mb-4">
+              <i class="fa-solid fa-server"></i>
+            </div>
+            <h3 class="text-base font-bold text-slate-900">API &amp; Database Design</h3>
+            <p class="text-xs sm:text-sm text-slate-600 mt-2 leading-relaxed">
+              Secure RESTful APIs, authentication systems, payment gateway integrations, and optimized MongoDB, MySQL, Firebase, or Supabase backends.
+            </p>
+          </div>
+          <div class="mt-4 pt-3 border-t border-slate-100 text-[11px] font-mono text-indigo-600 font-semibold">
+            REST APIs · MySQL · MongoDB · Supabase
+          </div>
+        </div>
+
+        <!-- Service 4 -->
+        <div class="stagger-card hover-lift bg-white rounded-2xl border border-slate-200 p-6 flex flex-col justify-between" style="transition-delay: 320ms;">
+          <div>
+            <div class="w-11 h-11 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center text-lg mb-4">
+              <i class="fa-solid fa-gauge-high"></i>
+            </div>
+            <h3 class="text-base font-bold text-slate-900">Frontend Modernization</h3>
+            <p class="text-xs sm:text-sm text-slate-600 mt-2 leading-relaxed">
+              Upgrading legacy websites into fast, SEO-friendly, accessible interfaces with Tailwind CSS, TypeScript, and modern animations.
+            </p>
+          </div>
+          <div class="mt-4 pt-3 border-t border-slate-100 text-[11px] font-mono text-amber-600 font-semibold">
+            TypeScript · Tailwind CSS · Core Web Vitals
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Technical Skills Section -->
+  <section id="skills" class="py-16 sm:py-20 bg-white border-b border-slate-200/80 reveal-section">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10">
+        <div>
+          <span class="text-xs font-mono font-semibold uppercase tracking-wider text-blue-600">03 / Technical Arsenal</span>
+          <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 mt-2 tracking-tight">
+            Languages, Frameworks &amp; Databases
+          </h2>
+          <p class="text-slate-600 text-sm sm:text-base mt-2 max-w-2xl">
+            A versatile full-stack toolkit enabling rapid prototyping, robust backend engineering, and modern user interfaces.
+          </p>
+        </div>
+
+        <!-- Interactive Skill Filter Buttons -->
+        <div class="flex flex-wrap gap-2" id="skill-filters">
+          <button data-filter="all" class="skill-filter-btn active px-4 py-2 rounded-xl text-xs font-semibold bg-slate-900 text-white shadow-sm transition-all">
+            All Stack (17)
+          </button>
+          <button data-filter="frontend" class="skill-filter-btn px-4 py-2 rounded-xl text-xs font-semibold bg-white text-slate-700 border border-slate-200 hover:border-blue-400 transition-all">
+            Frontend
+          </button>
+          <button data-filter="backend" class="skill-filter-btn px-4 py-2 rounded-xl text-xs font-semibold bg-white text-slate-700 border border-slate-200 hover:border-blue-400 transition-all">
+            Backend
+          </button>
+          <button data-filter="database" class="skill-filter-btn px-4 py-2 rounded-xl text-xs font-semibold bg-white text-slate-700 border border-slate-200 hover:border-blue-400 transition-all">
+            Database &amp; BaaS
+          </button>
+        </div>
+      </div>
+
+      <!-- Skills Grid -->
+      <div id="skills-grid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3.5">
+        <!-- Populated cleanly via JS for instant filtering -->
+      </div>
+    </div>
+  </section>
+
+  <!-- Work Experience Section -->
+  <section id="experience" class="py-16 sm:py-20 bg-slate-50/60 border-b border-slate-200/80 reveal-section">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="mb-12">
+        <span class="text-xs font-mono font-semibold uppercase tracking-wider text-blue-600">04 / Career Timeline</span>
+        <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 mt-2 tracking-tight">
+          Work Experience
+        </h2>
+        <p class="text-slate-600 text-sm sm:text-base mt-2">
+          Proven track record delivering production web solutions across remote engineering teams.
+        </p>
+      </div>
+
+      <div class="relative border-l-2 border-slate-200 ml-3 sm:ml-4 space-y-10">
+        
+        <!-- Experience 1: Dual Core HQ -->
+        <div class="stagger-card relative pl-7 sm:pl-10" style="transition-delay: 100ms;">
+          <span class="absolute -left-[9px] top-1.5 w-4 h-4 rounded-full bg-blue-600 ring-4 ring-blue-100 animate-pulse"></span>
+          <div class="hover-lift bg-white rounded-2xl border border-slate-200 p-6 shadow-xs hover:border-blue-300">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-3">
+              <div>
+                <div class="flex items-center gap-2.5 flex-wrap">
+                  <h3 class="text-lg font-bold text-slate-900">Frontend Developer</h3>
+                  <span class="px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200">
+                    Present
+                  </span>
+                </div>
+                <p class="text-sm font-semibold text-blue-600 mt-0.5">Dual Core HQ · Internship</p>
+              </div>
+              <div class="text-xs font-mono text-slate-500 sm:text-right">
+                <p class="font-semibold text-slate-700">Aug 2026 – Present</p>
+                <p>Nigeria · Remote</p>
+              </div>
+            </div>
+            <p class="text-sm text-slate-600 leading-relaxed mb-4">
+              Collaborating with the engineering team to build responsive, component-driven web interfaces, optimizing frontend performance, and implementing modern React and Next.js workflows.
+            </p>
+            <div class="flex flex-wrap gap-2">
+              <span class="px-2.5 py-1 rounded-lg bg-slate-100 text-slate-700 text-xs font-medium">Next.js</span>
+              <span class="px-2.5 py-1 rounded-lg bg-slate-100 text-slate-700 text-xs font-medium">JavaScript</span>
+              <span class="px-2.5 py-1 rounded-lg bg-slate-100 text-slate-700 text-xs font-medium">Frontend Architecture</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Experience 2: Aditechdata.com.ng -->
+        <div class="stagger-card relative pl-7 sm:pl-10" style="transition-delay: 220ms;">
+          <span class="absolute -left-[9px] top-1.5 w-4 h-4 rounded-full bg-emerald-600 ring-4 ring-emerald-50"></span>
+          <div class="hover-lift bg-white rounded-2xl border border-slate-200 p-6 shadow-xs hover:border-blue-300">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-3">
+              <div>
+                <div class="flex items-center gap-2.5 flex-wrap">
+                  <h3 class="text-lg font-bold text-slate-900">Web Developer</h3>
+                  <span class="px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200">
+                    Present
+                  </span>
+                </div>
+                <p class="text-sm font-semibold text-blue-600 mt-0.5">Aditechdata.com.ng · Full-time</p>
+              </div>
+              <div class="text-xs font-mono text-slate-500 sm:text-right">
+                <p class="font-semibold text-slate-700">Apr 2025 – Present · 1 yr 8 mos</p>
+                <p>Nigeria · Remote</p>
+              </div>
+            </div>
+            <p class="text-sm text-slate-600 leading-relaxed mb-4">
+              Serving as Full Stack Web Developer, architecting and maintaining automated digital services, user dashboards, API integrations, and secure database operations for seamless customer transactions.
+            </p>
+            <div class="flex flex-wrap gap-2">
+              <span class="px-2.5 py-1 rounded-lg bg-slate-100 text-slate-700 text-xs font-medium">Python</span>
+              <span class="px-2.5 py-1 rounded-lg bg-slate-100 text-slate-700 text-xs font-medium">React.js</span>
+              <span class="px-2.5 py-1 rounded-lg bg-slate-100 text-slate-700 text-xs font-medium">Full Stack Development</span>
+              <span class="px-2.5 py-1 rounded-lg bg-slate-100 text-slate-700 text-xs font-medium">API Integration</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Experience 3: Voya App -->
+        <div class="stagger-card relative pl-7 sm:pl-10" style="transition-delay: 340ms;">
+          <span class="absolute -left-[9px] top-1.5 w-4 h-4 rounded-full bg-slate-400 ring-4 ring-slate-100"></span>
+          <div class="hover-lift bg-white rounded-2xl border border-slate-200 p-6 shadow-xs hover:border-blue-300">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-3">
+              <div>
+                <h3 class="text-lg font-bold text-slate-900">Web Developer</h3>
+                <p class="text-sm font-semibold text-blue-600 mt-0.5">Voya App</p>
+              </div>
+              <div class="text-xs font-mono text-slate-500 sm:text-right">
+                <p class="font-semibold text-slate-700">Full Stack &amp; Web Engineering</p>
+              </div>
+            </div>
+            <p class="text-sm text-slate-600 leading-relaxed mb-4">
+              Contributed to full-stack web features, interactive React.js user views, and Python backend services across a multi-technology product stack.
+            </p>
+            <div class="flex flex-wrap gap-2">
+              <span class="px-2.5 py-1 rounded-lg bg-slate-100 text-slate-700 text-xs font-medium">Python</span>
+              <span class="px-2.5 py-1 rounded-lg bg-slate-100 text-slate-700 text-xs font-medium">React.js</span>
+              <span class="px-2.5 py-1 rounded-lg bg-slate-100 text-slate-700 text-xs font-medium">Modern Web Stack</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- NEW SECTION: Development Workflow & Engineering Process -->
+  <section id="process" class="py-16 sm:py-20 bg-white border-b border-slate-100 reveal-section">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center max-w-2xl mx-auto mb-12">
+        <span class="text-xs font-mono font-semibold uppercase tracking-wider text-blue-600">05 / How I Work</span>
+        <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 mt-2 tracking-tight">
+          My 4-Step Engineering Workflow
+        </h2>
+        <p class="text-slate-600 text-sm sm:text-base mt-2">
+          A transparent, milestone-driven development process that keeps your project on schedule and built to scale.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div class="stagger-card hover-lift p-6 rounded-2xl bg-slate-50/70 border border-slate-200/80 relative" style="transition-delay: 80ms;">
+          <span class="text-3xl font-extrabold font-mono text-blue-600/20 absolute top-4 right-5">01</span>
+          <div class="w-10 h-10 rounded-xl bg-blue-600 text-white flex items-center justify-center text-sm font-bold mb-4 shadow-xs">
+            <i class="fa-solid fa-compass-drafting"></i>
+          </div>
+          <h3 class="font-bold text-slate-900 text-base">Discovery &amp; Architecture</h3>
+          <p class="text-xs sm:text-sm text-slate-600 mt-2 leading-relaxed">
+            Clarifying business goals, user flows, database models, and choosing the ideal tech stack before writing code.
+          </p>
+        </div>
+
+        <div class="stagger-card hover-lift p-6 rounded-2xl bg-slate-50/70 border border-slate-200/80 relative" style="transition-delay: 160ms;">
+          <span class="text-3xl font-extrabold font-mono text-blue-600/20 absolute top-4 right-5">02</span>
+          <div class="w-10 h-10 rounded-xl bg-slate-900 text-white flex items-center justify-center text-sm font-bold mb-4 shadow-xs">
+            <i class="fa-solid fa-pen-ruler"></i>
+          </div>
+          <h3 class="font-bold text-slate-900 text-base">UI/UX &amp; Prototyping</h3>
+          <p class="text-xs sm:text-sm text-slate-600 mt-2 leading-relaxed">
+            Designing clean, mobile-first layouts and component hierarchies focused on speed, clarity, and accessibility.
+          </p>
+        </div>
+
+        <div class="stagger-card hover-lift p-6 rounded-2xl bg-slate-50/70 border border-slate-200/80 relative" style="transition-delay: 240ms;">
+          <span class="text-3xl font-extrabold font-mono text-blue-600/20 absolute top-4 right-5">03</span>
+          <div class="w-10 h-10 rounded-xl bg-emerald-600 text-white flex items-center justify-center text-sm font-bold mb-4 shadow-xs">
+            <i class="fa-solid fa-code-branch"></i>
+          </div>
+          <h3 class="font-bold text-slate-900 text-base">Full Stack Implementation</h3>
+          <p class="text-xs sm:text-sm text-slate-600 mt-2 leading-relaxed">
+            Writing modular, well-documented frontend and backend code with regular progress demos and Git version control.
+          </p>
+        </div>
+
+        <div class="stagger-card hover-lift p-6 rounded-2xl bg-slate-50/70 border border-slate-200/80 relative" style="transition-delay: 320ms;">
+          <span class="text-3xl font-extrabold font-mono text-blue-600/20 absolute top-4 right-5">04</span>
+          <div class="w-10 h-10 rounded-xl bg-indigo-600 text-white flex items-center justify-center text-sm font-bold mb-4 shadow-xs">
+            <i class="fa-solid fa-rocket"></i>
+          </div>
+          <h3 class="font-bold text-slate-900 text-base">Testing &amp; Deployment</h3>
+          <p class="text-xs sm:text-sm text-slate-600 mt-2 leading-relaxed">
+            Rigorous cross-device QA, security checks, cloud deployment, and ongoing post-launch support.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Continuous Learning & Courses Section -->
+  <section id="learning" class="py-16 sm:py-20 bg-slate-50/70 border-b border-slate-200/80 reveal-section">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="mb-10">
+        <span class="text-xs font-mono font-semibold uppercase tracking-wider text-blue-600">06 / Education &amp; Certifications</span>
+        <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 mt-2 tracking-tight">
+          Continuous Learning &amp; Developer Training
+        </h2>
+        <p class="text-slate-600 text-sm sm:text-base mt-2 max-w-2xl">
+          Dedicated to lifelong mastery through hands-on coding curricula, algorithmic challenges, and intensive full-stack engineering courses.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <!-- freeCodeCamp Card -->
+        <div class="stagger-card hover-lift bg-white rounded-2xl border border-slate-200 p-6 shadow-xs flex flex-col justify-between" style="transition-delay: 100ms;">
+          <div>
+            <div class="w-12 h-12 rounded-xl bg-slate-900 text-white flex items-center justify-center text-xl mb-5">
+              <i class="fa-brands fa-free-code-camp"></i>
+            </div>
+            <h3 class="text-lg font-bold text-slate-900">freeCodeCamp</h3>
+            <p class="text-xs font-mono text-blue-600 font-semibold mt-1">Full Stack &amp; Algorithms Curriculum</p>
+            <p class="text-sm text-slate-600 mt-3 leading-relaxed">
+              Completed thousands of hours of interactive coding challenges and certification projects covering Responsive Web Design, JavaScript Algorithms &amp; Data Structures, Front End Development Libraries, and Backend APIs.
+            </p>
+          </div>
+          <div class="mt-5 pt-4 border-t border-slate-100 flex items-center justify-between text-xs font-semibold text-slate-700">
+            <span>Verified Track</span>
+            <span class="text-emerald-600"><i class="fa-solid fa-circle-check mr-1"></i>Active Learner</span>
+          </div>
+        </div>
+
+        <!-- Sololearn Card -->
+        <div class="stagger-card hover-lift bg-white rounded-2xl border border-slate-200 p-6 shadow-xs flex flex-col justify-between" style="transition-delay: 200ms;">
+          <div>
+            <div class="w-12 h-12 rounded-xl bg-blue-600 text-white flex items-center justify-center text-xl mb-5">
+              <i class="fa-solid fa-code"></i>
+            </div>
+            <h3 class="text-lg font-bold text-slate-900">Sololearn</h3>
+            <p class="text-xs font-mono text-blue-600 font-semibold mt-1">Multi-Language Programming Mastery</p>
+            <p class="text-sm text-slate-600 mt-3 leading-relaxed">
+              Earned foundational and intermediate certifications across Python, JavaScript, TypeScript, PHP, SQL, HTML5, and CSS3 through daily problem-solving and peer code reviews.
+            </p>
+          </div>
+          <div class="mt-5 pt-4 border-t border-slate-100 flex items-center justify-between text-xs font-semibold text-slate-700">
+            <span>Core Languages</span>
+            <span class="text-emerald-600"><i class="fa-solid fa-circle-check mr-1"></i>Certified</span>
+          </div>
+        </div>
+
+        <!-- Udemy & Beyond Card -->
+        <div class="stagger-card hover-lift bg-white rounded-2xl border border-slate-200 p-6 shadow-xs flex flex-col justify-between" style="transition-delay: 300ms;">
+          <div>
+            <div class="w-12 h-12 rounded-xl bg-purple-600 text-white flex items-center justify-center text-xl mb-5">
+              <i class="fa-solid fa-graduation-cap"></i>
+            </div>
+            <h3 class="text-lg font-bold text-slate-900">Udemy &amp; Specialized Courses</h3>
+            <p class="text-xs font-mono text-blue-600 font-semibold mt-1">Production Web &amp; Mobile Engineering</p>
+            <p class="text-sm text-slate-600 mt-3 leading-relaxed">
+              Completed project-based bootcamps in React.js, Next.js, Node.js/Express, Laravel, MongoDB, Firebase, and Supabase—translating theory directly into real-world deployed applications.
+            </p>
+          </div>
+          <div class="mt-5 pt-4 border-t border-slate-100 flex items-center justify-between text-xs font-semibold text-slate-700">
+            <span>Project Bootcamps</span>
+            <span class="text-emerald-600"><i class="fa-solid fa-circle-check mr-1"></i>Continuous Growth</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Featured Projects Section -->
+  <section id="projects" class="py-16 sm:py-20 bg-white border-b border-slate-100 reveal-section">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10">
+        <div>
+          <span class="text-xs font-mono font-semibold uppercase tracking-wider text-blue-600">07 / Selected Work</span>
+          <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 mt-2 tracking-tight">
+            Featured Projects
+          </h2>
+          <p class="text-slate-600 text-sm sm:text-base mt-2 max-w-2xl">
+            Real-world web applications built with clean UI architecture, responsive layouts, and scalable backend logic.
+          </p>
+        </div>
+
+        <!-- Project Category Filter -->
+        <div class="flex flex-wrap gap-2" id="project-filters">
+          <button data-category="all" class="proj-filter-btn active px-4 py-2 rounded-xl text-xs font-semibold bg-slate-900 text-white transition-all">
+            All Projects
+          </button>
+          <button data-category="fullstack" class="proj-filter-btn px-4 py-2 rounded-xl text-xs font-semibold bg-slate-100 text-slate-700 hover:bg-slate-200 transition-all">
+            Full Stack &amp; Fintech
+          </button>
+          <button data-category="frontend" class="proj-filter-btn px-4 py-2 rounded-xl text-xs font-semibold bg-slate-100 text-slate-700 hover:bg-slate-200 transition-all">
+            Frontend &amp; UI
+          </button>
+        </div>
+      </div>
+
+      <!-- Projects Grid -->
+      <div id="projects-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <!-- Populated via JS -->
+      </div>
+    </div>
+  </section>
+
+  <!-- NEW SECTION: Frequently Asked Questions (FAQ) -->
+  <section id="faq" class="py-16 sm:py-20 bg-slate-50/50 border-b border-slate-200/80 reveal-section">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-10">
+        <span class="text-xs font-mono font-semibold uppercase tracking-wider text-blue-600">08 / Common Questions</span>
+        <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 mt-2 tracking-tight">
+          Frequently Asked Questions
+        </h2>
+        <p class="text-slate-600 text-sm sm:text-base mt-2">
+          Quick answers regarding my availability, remote collaboration, and project turnaround.
+        </p>
+      </div>
+
+      <div class="space-y-3.5" id="faq-accordion">
+        <!-- FAQ 1 -->
+        <div class="faq-item bg-white rounded-2xl border border-slate-200 overflow-hidden transition-colors hover:border-blue-300">
+          <button type="button" class="faq-trigger w-full px-6 py-4 text-left flex items-center justify-between gap-4 font-bold text-slate-900 text-sm sm:text-base">
+            <span>Are you currently available for full-time remote roles or freelance projects?</span>
+            <i class="fa-solid fa-chevron-down faq-chevron text-slate-400 text-xs transition-transform duration-300"></i>
+          </button>
+          <div class="faq-answer px-6 text-sm text-slate-600 leading-relaxed">
+            <div class="pb-4 border-t border-slate-100 pt-3">
+              Yes! I am actively open to full-time Senior Web Developer, Frontend Developer, and Full Stack Developer roles, as well as contract and freelance web or mobile app projects globally.
+            </div>
+          </div>
+        </div>
+
+        <!-- FAQ 2 -->
+        <div class="faq-item bg-white rounded-2xl border border-slate-200 overflow-hidden transition-colors hover:border-blue-300">
+          <button type="button" class="faq-trigger w-full px-6 py-4 text-left flex items-center justify-between gap-4 font-bold text-slate-900 text-sm sm:text-base">
+            <span>Which technologies do you specialize in for new web or mobile builds?</span>
+            <i class="fa-solid fa-chevron-down faq-chevron text-slate-400 text-xs transition-transform duration-300"></i>
+          </button>
+          <div class="faq-answer px-6 text-sm text-slate-600 leading-relaxed">
+            <div class="pb-4 border-t border-slate-100 pt-3">
+              On the frontend, I specialize in React.js, Next.js, TypeScript, JavaScript, Tailwind CSS, and SCSS. On the backend, I build with Node.js, Express.js, Python, PHP, and Laravel, backed by MongoDB, MySQL, Firebase, or Supabase.
+            </div>
+          </div>
+        </div>
+
+        <!-- FAQ 3 -->
+        <div class="faq-item bg-white rounded-2xl border border-slate-200 overflow-hidden transition-colors hover:border-blue-300">
+          <button type="button" class="faq-trigger w-full px-6 py-4 text-left flex items-center justify-between gap-4 font-bold text-slate-900 text-sm sm:text-base">
+            <span>How can we start discussing a project or job opportunity?</span>
+            <i class="fa-solid fa-chevron-down faq-chevron text-slate-400 text-xs transition-transform duration-300"></i>
+          </button>
+          <div class="faq-answer px-6 text-sm text-slate-600 leading-relaxed">
+            <div class="pb-4 border-t border-slate-100 pt-3">
+              You can message me directly on WhatsApp at <strong>+234 813 756 5810</strong>, email me at <strong>adisanureni2023@gmail.com</strong>, or use the interactive contact form right below to send your project brief in seconds.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact Section -->
+  <section id="contact" class="py-16 sm:py-24 bg-white reveal-section">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="bg-white rounded-3xl border border-slate-200 shadow-lg shadow-slate-200/40 overflow-hidden">
+        <div class="grid grid-cols-1 lg:grid-cols-12">
+          
+          <!-- Contact Left Info -->
+          <div class="lg:col-span-5 bg-slate-900 text-white p-8 sm:p-10 flex flex-col justify-between">
+            <div>
+              <span class="inline-block px-3 py-1 rounded-full bg-blue-500/20 border border-blue-400/30 text-blue-300 text-xs font-mono font-semibold mb-4">
+                Let's Work Together
+              </span>
+              <h2 class="text-2xl sm:text-3xl font-extrabold tracking-tight">
+                Ready to build your next web or mobile project?
+              </h2>
+              <p class="text-slate-300 text-sm sm:text-base mt-3 leading-relaxed">
+                I am open to full-time roles, frontend/full-stack contracts, and freelance software development opportunities. Reach out directly via email, WhatsApp, or LinkedIn.
+              </p>
+
+              <div class="mt-8 space-y-4">
+                <div class="flex items-center gap-3.5 group">
+                  <div class="w-10 h-10 rounded-xl bg-white/10 group-hover:bg-blue-600/30 transition-colors flex items-center justify-center text-blue-400 shrink-0">
+                    <i class="fa-regular fa-envelope"></i>
+                  </div>
+                  <div class="min-w-0">
+                    <p class="text-xs text-slate-400">Email Address</p>
+                    <a href="mailto:adisanureni2023@gmail.com" class="text-sm font-semibold text-white hover:text-blue-300 truncate block transition-colors">
+                      adisanureni2023@gmail.com
+                    </a>
+                  </div>
+                </div>
+
+                <div class="flex items-center gap-3.5 group">
+                  <div class="w-10 h-10 rounded-xl bg-white/10 group-hover:bg-emerald-600/30 transition-colors flex items-center justify-center text-emerald-400 shrink-0">
+                    <i class="fa-brands fa-whatsapp"></i>
+                  </div>
+                  <div>
+                    <p class="text-xs text-slate-400">Phone &amp; WhatsApp</p>
+                    <a href="https://wa.me/2348137565810" target="_blank" rel="noopener noreferrer" class="text-sm font-semibold text-white hover:text-emerald-300 transition-colors">
+                      +234 813 756 5810
+                    </a>
+                  </div>
+                </div>
+
+                <div class="flex items-center gap-3.5">
+                  <div class="w-10 h-10 rounded-xl bg-white/10 flex items-center justify-center text-blue-400 shrink-0">
+                    <i class="fa-solid fa-location-dot"></i>
+                  </div>
+                  <div>
+                    <p class="text-xs text-slate-400">Location</p>
+                    <p class="text-sm font-semibold text-white">Ikire, Osun State, Nigeria (Remote Ready)</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="mt-10 pt-6 border-t border-white/10 flex flex-wrap items-center gap-3">
+              <a href="https://www.linkedin.com/in/adisa-nureni-olaniyi" target="_blank" rel="noopener noreferrer"
+                 class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-500 hover:-translate-y-0.5 text-white text-xs font-semibold transition-all">
+                <i class="fa-brands fa-linkedin"></i>
+                <span>Connect on LinkedIn</span>
+              </a>
+              <a href="https://wa.me/2348137565810" target="_blank" rel="noopener noreferrer"
+                 class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 hover:-translate-y-0.5 text-white text-xs font-semibold transition-all">
+                <i class="fa-brands fa-whatsapp"></i>
+                <span>WhatsApp</span>
+              </a>
+            </div>
+          </div>
+
+          <!-- Contact Right Form -->
+          <div class="lg:col-span-7 p-8 sm:p-10 bg-white">
+            <h3 class="text-xl font-bold text-slate-900">Send a Direct Message</h3>
+            <p class="text-sm text-slate-500 mt-1">Fill out the details below and send instantly via Email or WhatsApp.</p>
+
+            <form id="contact-form" class="mt-6 space-y-4">
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label for="sender-name" class="block text-xs font-semibold text-slate-700 mb-1.5">Your Name *</label>
+                  <input type="text" id="sender-name" required placeholder="e.g. Sarah Johnson"
+                         class="w-full px-4 py-3 rounded-xl bg-slate-50 border border-slate-200 text-sm text-slate-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-600/20 focus:border-blue-600 transition-all" />
+                </div>
+                <div>
+                  <label for="sender-email" class="block text-xs font-semibold text-slate-700 mb-1.5">Your Email *</label>
+                  <input type="email" id="sender-email" required placeholder="you@company.com"
+                         class="w-full px-4 py-3 rounded-xl bg-slate-50 border border-slate-200 text-sm text-slate-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-600/20 focus:border-blue-600 transition-all" />
+                </div>
+              </div>
+
+              <div>
+                <label for="project-subject" class="block text-xs font-semibold text-slate-700 mb-1.5">Inquiry Type</label>
+                <select id="project-subject"
+                        class="w-full px-4 py-3 rounded-xl bg-slate-50 border border-slate-200 text-sm text-slate-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-600/20 focus:border-blue-600 transition-all">
+                  <option value="Full Stack Web Development">Full Stack Web Development</option>
+                  <option value="Frontend / React / Next.js Role">Frontend / React / Next.js Role</option>
+                  <option value="Mobile App Development">Mobile App Development</option>
+                  <option value="Freelance Project Collaboration">Freelance Project Collaboration</option>
+                </select>
+              </div>
+
+              <div>
+                <label for="sender-message" class="block text-xs font-semibold text-slate-700 mb-1.5">Project Details or Message *</label>
+                <textarea id="sender-message" rows="4" required placeholder="Tell me about your project timeline, requirements, or role..."
+                          class="w-full px-4 py-3 rounded-xl bg-slate-50 border border-slate-200 text-sm text-slate-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-600/20 focus:border-blue-600 transition-all"></textarea>
+              </div>
+
+              <div class="flex flex-col sm:flex-row gap-3 pt-2">
+                <button type="submit"
+                        class="flex-1 inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl bg-blue-600 hover:bg-blue-700 hover:-translate-y-0.5 text-white font-semibold text-sm shadow-sm hover:shadow-md transition-all duration-300">
+                  <i class="fa-regular fa-paper-plane"></i>
+                  <span>Send via Email</span>
+                </button>
+                <button type="button" id="send-whatsapp-btn"
+                        class="flex-1 inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 hover:-translate-y-0.5 text-white font-semibold text-sm shadow-sm hover:shadow-md transition-all duration-300">
+                  <i class="fa-brands fa-whatsapp text-base"></i>
+                  <span>Send via WhatsApp</span>
+                </button>
+              </div>
+            </form>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Enhanced Rich Animated Footer -->
+  <footer class="bg-slate-50 border-t border-slate-200 pt-14 pb-10 reveal-section">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-1 md:grid-cols-12 gap-8 pb-10 border-b border-slate-200/80">
+        <!-- Brand Column -->
+        <div class="md:col-span-5 space-y-3">
+          <a href="#home" class="inline-flex items-center gap-2.5 group">
+            <div class="w-9 h-9 rounded-xl bg-slate-900 text-white flex items-center justify-center font-mono font-bold text-sm group-hover:bg-blue-600 group-hover:rotate-3 transition-all duration-300">
+              DA
+            </div>
+            <span class="font-extrabold text-slate-900 text-lg tracking-tight">Adisa (Dev Aditech)</span>
+          </a>
+          <p class="text-sm text-slate-600 leading-relaxed max-w-sm">
+            Full Stack Web &amp; Mobile App Developer crafting high-performance digital products with React, Next.js, Node.js, Python, and Laravel.
+          </p>
+          <div class="inline-flex items-center gap-2 text-xs font-semibold text-emerald-700 bg-emerald-50 border border-emerald-200 px-3 py-1 rounded-full">
+            <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+            <span>Available for Remote Roles &amp; Projects</span>
+          </div>
+        </div>
+
+        <!-- Quick Links -->
+        <div class="md:col-span-3 space-y-2.5">
+          <h4 class="text-xs font-mono font-bold uppercase tracking-wider text-slate-900">Navigation</h4>
+          <ul class="space-y-2 text-sm text-slate-600">
+            <li><a href="#about" class="hover:text-blue-600 hover:translate-x-1 inline-block transition-all">About Me</a></li>
+            <li><a href="#services" class="hover:text-blue-600 hover:translate-x-1 inline-block transition-all">Services</a></li>
+            <li><a href="#skills" class="hover:text-blue-600 hover:translate-x-1 inline-block transition-all">Tech Stack</a></li>
+            <li><a href="#experience" class="hover:text-blue-600 hover:translate-x-1 inline-block transition-all">Experience</a></li>
+            <li><a href="#projects" class="hover:text-blue-600 hover:translate-x-1 inline-block transition-all">Projects</a></li>
+          </ul>
+        </div>
+
+        <!-- Connect & Socials -->
+        <div class="md:col-span-4 space-y-3">
+          <h4 class="text-xs font-mono font-bold uppercase tracking-wider text-slate-900">Connect Directly</h4>
+          <p class="text-sm text-slate-600">Ikire, Osun State, Nigeria</p>
+          <div class="flex items-center gap-3 pt-1">
+            <a href="https://www.linkedin.com/in/adisa-nureni-olaniyi" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn"
+               class="w-10 h-10 rounded-xl bg-white border border-slate-200 text-slate-700 hover:bg-blue-600 hover:text-white hover:border-blue-600 hover:-translate-y-1 flex items-center justify-center transition-all duration-300 shadow-2xs">
+              <i class="fa-brands fa-linkedin-in"></i>
+            </a>
+            <a href="https://wa.me/2348137565810" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp"
+               class="w-10 h-10 rounded-xl bg-white border border-slate-200 text-slate-700 hover:bg-emerald-600 hover:text-white hover:border-emerald-600 hover:-translate-y-1 flex items-center justify-center transition-all duration-300 shadow-2xs">
+              <i class="fa-brands fa-whatsapp"></i>
+            </a>
+            <a href="mailto:adisanureni2023@gmail.com" aria-label="Email"
+               class="w-10 h-10 rounded-xl bg-white border border-slate-200 text-slate-700 hover:bg-slate-900 hover:text-white hover:border-slate-900 hover:-translate-y-1 flex items-center justify-center transition-all duration-300 shadow-2xs">
+              <i class="fa-regular fa-envelope"></i>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <div class="pt-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs sm:text-sm text-slate-500">
+        <p>&copy; <span id="current-year">2026</span> <strong class="text-slate-800">Adisa (Dev Aditech) Nureni Olaniyi</strong>. All rights reserved.</p>
+        <button id="back-to-top-btn" class="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl bg-white border border-slate-200 text-slate-700 hover:border-blue-400 hover:text-blue-600 hover:-translate-y-0.5 font-semibold text-xs transition-all duration-300 shadow-2xs">
+          <span>Back to Top</span>
+          <i class="fa-solid fa-arrow-up"></i>
+        </button>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Project Detail Modal with Smooth Scale Transition -->
+  <div id="project-modal" class="fixed inset-0 z-50 hidden items-center justify-center bg-slate-900/50 backdrop-blur-sm p-4 opacity-0 transition-opacity duration-300">
+    <div id="project-modal-card" class="bg-white rounded-2xl border border-slate-200 max-w-lg w-full p-6 sm:p-8 shadow-2xl relative transform scale-95 transition-transform duration-300">
+      <button id="close-modal-btn" aria-label="Close modal" class="absolute top-4 right-4 w-9 h-9 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-600 flex items-center justify-center transition-colors">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+      <div id="modal-content"></div>
+    </div>
+  </div>
+
+  <!-- Application Logic -->
+  <script>
+    // Set current year dynamically
+    document.getElementById('current-year').textContent = new Date().getFullYear();
+
+    // Dynamic Typing Effect in Hero Subtitle
+    const roles = [
+      'Mobile App Developer',
+      'React & Next.js Engineer',
+      'Python & Laravel Developer',
+      'Full Stack Problem Solver'
+    ];
+    let roleIdx = 0;
+    let charIdx = roles[0].length;
+    let isDeleting = true;
+    const typedRoleEl = document.getElementById('typed-role');
+
+    function typeLoop() {
+      const currentRole = roles[roleIdx];
+      if (isDeleting) {
+        charIdx--;
+        typedRoleEl.textContent = currentRole.substring(0, charIdx);
+        if (charIdx === 0) {
+          isDeleting = false;
+          roleIdx = (roleIdx + 1) % roles.length;
+          setTimeout(typeLoop, 350);
+          return;
+        }
+        setTimeout(typeLoop, 45);
+      } else {
+        charIdx++;
+        typedRoleEl.textContent = currentRole.substring(0, charIdx);
+        if (charIdx === currentRole.length) {
+          isDeleting = true;
+          setTimeout(typeLoop, 2200);
+          return;
+        }
+        setTimeout(typeLoop, 75);
+      }
+    }
+    setTimeout(typeLoop, 2400);
+
+    // Navbar Scroll Effect, Scroll Progress Bar & Active Link Highlighting
+    const mainNavbar = document.getElementById('main-navbar');
+    const navbarInner = document.getElementById('navbar-inner');
+    const scrollProgress = document.getElementById('scroll-progress');
+    const navLinks = document.querySelectorAll('.nav-link-animated');
+    const sections = document.querySelectorAll('section[id]');
+
+    window.addEventListener('scroll', () => {
+      const scrollY = window.scrollY;
+      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+      const progress = docHeight > 0 ? (scrollY / docHeight) * 100 : 0;
+      scrollProgress.style.width = `${progress}%`;
+
+      if (scrollY > 24) {
+        mainNavbar.classList.add('navbar-scrolled');
+        navbarInner.classList.remove('sm:h-[72px]');
+        navbarInner.classList.add('sm:h-16');
+      } else {
+        mainNavbar.classList.remove('navbar-scrolled');
+        navbarInner.classList.add('sm:h-[72px]');
+        navbarInner.classList.remove('sm:h-16');
+      }
+
+      // Active Nav Link Highlight
+      let currentSectionId = '';
+      sections.forEach(sec => {
+        const top = sec.offsetTop - 120;
+        if (scrollY >= top) {
+          currentSectionId = sec.getAttribute('id');
+        }
+      });
+
+      navLinks.forEach(link => {
+        link.classList.remove('active-nav', 'text-blue-600');
+        if (link.getAttribute('href') === `#${currentSectionId}`) {
+          link.classList.add('active-nav', 'text-blue-600');
+        }
+      });
+    }, { passive: true });
+
+    // Back to Top Smooth Scroll
+    document.getElementById('back-to-top-btn').addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+
+    // 1. Technical Stack Data (Directly matching Adisa's LinkedIn headline & experience)
+    const skillsData = [
+      { name: 'JavaScript', category: 'frontend', icon: 'fa-brands fa-js', color: 'text-amber-500' },
+      { name: 'TypeScript', category: 'frontend', icon: 'fa-solid fa-code', color: 'text-blue-600' },
+      { name: 'React.js', category: 'frontend', icon: 'fa-brands fa-react', color: 'text-sky-500' },
+      { name: 'Next.js', category: 'frontend', icon: 'fa-solid fa-n', color: 'text-slate-900' },
+      { name: 'HTML5', category: 'frontend', icon: 'fa-brands fa-html5', color: 'text-orange-600' },
+      { name: 'CSS3', category: 'frontend', icon: 'fa-brands fa-css3-alt', color: 'text-blue-500' },
+      { name: 'Tailwind CSS', category: 'frontend', icon: 'fa-solid fa-wind', color: 'text-cyan-500' },
+      { name: 'SCSS', category: 'frontend', icon: 'fa-brands fa-sass', color: 'text-pink-500' },
+      { name: 'Node.js', category: 'backend', icon: 'fa-brands fa-node-js', color: 'text-emerald-600' },
+      { name: 'Express.js', category: 'backend', icon: 'fa-solid fa-server', color: 'text-slate-700' },
+      { name: 'Python', category: 'backend', icon: 'fa-brands fa-python', color: 'text-blue-600' },
+      { name: 'PHP', category: 'backend', icon: 'fa-brands fa-php', color: 'text-indigo-600' },
+      { name: 'Laravel', category: 'backend', icon: 'fa-brands fa-laravel', color: 'text-rose-600' },
+      { name: 'MongoDB', category: 'database', icon: 'fa-solid fa-leaf', color: 'text-emerald-600' },
+      { name: 'MySQL', category: 'database', icon: 'fa-solid fa-database', color: 'text-blue-700' },
+      { name: 'Firebase', category: 'database', icon: 'fa-solid fa-fire', color: 'text-amber-500' },
+      { name: 'Supabase', category: 'database', icon: 'fa-solid fa-bolt', color: 'text-emerald-500' }
+    ];
+
+    // 2. Projects Data
+    const projectsData = [
+      {
+        title: 'Aditech Bank Web App',
+        category: 'fullstack',
+        badge: 'Fintech & Banking',
+        description: 'A modern digital banking web application featuring account management, interactive balance tracking, and streamlined transfer workflows.',
+        tech: ['React.js', 'JavaScript', 'Tailwind CSS', 'REST API'],
+        liveUrl: 'https://aditechbank.netlify.app/',
+        highlights: 'Responsive dashboard architecture, clean financial UI components, and real-time state updates.'
+      },
+      {
+        title: 'AditechData VTU Platform',
+        category: 'fullstack',
+        badge: 'Full Stack Production',
+        description: 'Automated digital utility and telecom platform delivering instant airtime, data bundles, and bill payments with wallet funding.',
+        tech: ['Python', 'React.js', 'MySQL', 'API Integration'],
+        liveUrl: 'https://aditechdata.com.ng',
+        highlights: 'End-to-end full-stack platform engineered and maintained in production for Nigerian users.'
+      },
+      {
+        title: 'School Management Portal',
+        category: 'fullstack',
+        badge: 'EdTech System',
+        description: 'Comprehensive academic management web system built to streamline student enrollment, course schedules, and institutional administration.',
+        tech: ['HTML5', 'CSS3', 'JavaScript', 'Responsive UI'],
+        liveUrl: 'https://nureni-2023.github.io/SCHOOL-WEB/',
+        highlights: 'Accessible multi-page portal designed for students, educators, and school administrators.'
+      },
+      {
+        title: 'Fluent Learning Hub',
+        category: 'frontend',
+        badge: 'EdTech Interface',
+        description: 'Interactive course discovery and student progress dashboard inspired by modern self-paced developer learning platforms.',
+        tech: ['Next.js', 'TypeScript', 'Tailwind CSS'],
+        liveUrl: '',
+        highlights: 'Dynamic course filtering, clean typography, and modular lesson card layouts.'
+      },
+      {
+        title: 'SliceCraft Ordering App',
+        category: 'frontend',
+        badge: 'E-Commerce UI',
+        description: 'Multi-step custom pizza builder and food ordering interface with real-time dynamic pricing and interactive cart state.',
+        tech: ['React.js', 'TypeScript', 'SCSS'],
+        liveUrl: '',
+        highlights: 'Smooth multi-step customization flow with instant price recalculation.'
+      },
+      {
+        title: 'GourmetHub Recipe Discovery',
+        category: 'frontend',
+        badge: 'Web Application',
+        description: 'High-performance culinary discovery application featuring categorized search, nutritional breakdowns, and mobile-first cards.',
+        tech: ['JavaScript', 'React.js', 'Tailwind CSS'],
+        liveUrl: '',
+        highlights: 'Fast client-side search filtering and clean white-surface card presentation.'
+      }
+    ];
+
+    // Render Skills with Staggered Entrance
+    const skillsGrid = document.getElementById('skills-grid');
+    function renderSkills(filter = 'all') {
+      const filtered = filter === 'all' ? skillsData : skillsData.filter(s => s.category === filter);
+      skillsGrid.innerHTML = filtered.map((skill, idx) => `
+        <div class="hover-lift bg-white rounded-xl border border-slate-200/90 p-4 flex items-center gap-3 shadow-2xs hover:border-blue-300" style="animation: fadeSlideUp 0.45s cubic-bezier(0.16, 1, 0.3, 1) ${idx * 35}ms both;">
+          <div class="w-9 h-9 rounded-lg bg-slate-50 border border-slate-100 flex items-center justify-center shrink-0">
+            <i class="${skill.icon} ${skill.color} text-base"></i>
+          </div>
+          <div>
+            <p class="font-semibold text-slate-900 text-sm leading-tight">${skill.name}</p>
+            <p class="text-[11px] text-slate-400 capitalize mt-0.5">${skill.category}</p>
+          </div>
+        </div>
+      `).join('');
+    }
+    renderSkills();
+
+    // Skill Filter Button Listeners
+    document.querySelectorAll('.skill-filter-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.skill-filter-btn').forEach(b => {
+          b.classList.remove('bg-slate-900', 'text-white', 'shadow-sm');
+          b.classList.add('bg-white', 'text-slate-700', 'border', 'border-slate-200');
+        });
+        btn.classList.remove('bg-white', 'text-slate-700', 'border', 'border-slate-200');
+        btn.classList.add('bg-slate-900', 'text-white', 'shadow-sm');
+        renderSkills(btn.dataset.filter);
+      });
+    });
+
+    // Render Projects with Staggered Entrance
+    const projectsGrid = document.getElementById('projects-grid');
+    function renderProjects(category = 'all') {
+      const filtered = category === 'all' ? projectsData : projectsData.filter(p => p.category === category);
+      projectsGrid.innerHTML = filtered.map((proj, idx) => `
+        <article class="hover-lift bg-white rounded-2xl border border-slate-200 p-6 flex flex-col justify-between shadow-2xs hover:border-blue-300" style="animation: fadeSlideUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) ${idx * 70}ms both;">
+          <div>
+            <div class="flex items-center justify-between gap-2 mb-4">
+              <span class="px-2.5 py-1 rounded-lg bg-blue-50 text-blue-700 text-[11px] font-semibold">
+                ${proj.badge}
+              </span>
+              ${proj.liveUrl ? `
+                <a href="${proj.liveUrl}" target="_blank" rel="noopener noreferrer" aria-label="Open live site for ${proj.title}" class="text-slate-400 hover:text-blue-600 transition-colors">
+                  <i class="fa-solid fa-arrow-up-right-from-square text-sm"></i>
+                </a>
+              ` : ''}
+            </div>
+            <h3 class="text-lg font-bold text-slate-900">${proj.title}</h3>
+            <p class="text-sm text-slate-600 mt-2 leading-relaxed">
+              ${proj.description}
+            </p>
+          </div>
+
+          <div class="mt-6 pt-4 border-t border-slate-100">
+            <div class="flex flex-wrap gap-1.5 mb-4">
+              ${proj.tech.map(t => `<span class="px-2 py-0.5 rounded-md bg-slate-100 text-slate-700 text-[11px] font-mono">${t}</span>`).join('')}
+            </div>
+            <div class="flex items-center gap-2">
+              <button onclick="openProjectModal('${proj.title.replace(/'/g, "\\'")}')"
+                      class="flex-1 py-2.5 px-3 rounded-xl bg-slate-900 hover:bg-blue-600 text-white text-xs font-semibold transition-colors">
+                Project Details
+              </button>
+              ${proj.liveUrl ? `
+                <a href="${proj.liveUrl}" target="_blank" rel="noopener noreferrer"
+                   class="py-2.5 px-3.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 text-xs font-semibold transition-colors">
+                  Live Demo
+                </a>
+              ` : ''}
+            </div>
+          </div>
+        </article>
+      `).join('');
+    }
+    renderProjects();
+
+    // Project Filter Button Listeners
+    document.querySelectorAll('.proj-filter-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.proj-filter-btn').forEach(b => {
+          b.classList.remove('bg-slate-900', 'text-white');
+          b.classList.add('bg-slate-100', 'text-slate-700');
+        });
+        btn.classList.remove('bg-slate-100', 'text-slate-700');
+        btn.classList.add('bg-slate-900', 'text-white');
+        renderProjects(btn.dataset.category);
+      });
+    });
+
+    // FAQ Accordion Interaction
+    document.querySelectorAll('.faq-trigger').forEach(trigger => {
+      trigger.addEventListener('click', () => {
+        const item = trigger.parentElement;
+        const isOpen = item.classList.contains('open');
+        document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+        if (!isOpen) {
+          item.classList.add('open');
+        }
+      });
+    });
+
+    // Project Modal Logic with Smooth Scale & Opacity Transition
+    const modal = document.getElementById('project-modal');
+    const modalCard = document.getElementById('project-modal-card');
+    const modalContent = document.getElementById('modal-content');
+    const closeModalBtn = document.getElementById('close-modal-btn');
+
+    function openProjectModal(title) {
+      const proj = projectsData.find(p => p.title === title);
+      if (!proj) return;
+
+      modalContent.innerHTML = `
+        <span class="px-2.5 py-1 rounded-lg bg-blue-50 text-blue-700 text-xs font-semibold">${proj.badge}</span>
+        <h3 class="text-2xl font-extrabold text-slate-900 mt-3">${proj.title}</h3>
+        <p class="text-sm text-slate-600 mt-3 leading-relaxed">${proj.description}</p>
+        <div class="mt-4 p-4 rounded-xl bg-slate-50 border border-slate-200">
+          <p class="text-xs font-bold text-slate-900 uppercase tracking-wider mb-1">Key Engineering Highlights</p>
+          <p class="text-sm text-slate-600">${proj.highlights}</p>
+        </div>
+        <div class="mt-4">
+          <p class="text-xs font-bold text-slate-900 uppercase tracking-wider mb-2">Technologies Used</p>
+          <div class="flex flex-wrap gap-2">
+            ${proj.tech.map(t => `<span class="px-3 py-1 rounded-lg bg-slate-100 text-slate-800 text-xs font-mono font-medium">${t}</span>`).join('')}
+          </div>
+        </div>
+        <div class="mt-6 flex flex-wrap gap-3">
+          ${proj.liveUrl ? `
+            <a href="${proj.liveUrl}" target="_blank" rel="noopener noreferrer"
+               class="flex-1 inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold transition-colors">
+              <span>Visit Live Application</span>
+              <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>
+            </a>
+          ` : ''}
+          <a href="#contact" onclick="closeProjectModal()"
+             class="flex-1 inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-sm font-semibold transition-colors">
+            <span>Request Similar Build</span>
+          </a>
+        </div>
+      `;
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+      requestAnimationFrame(() => {
+        modal.classList.remove('opacity-0');
+        modalCard.classList.remove('scale-95');
+        modalCard.classList.add('scale-100');
+      });
+    }
+
+    function closeProjectModal() {
+      modal.classList.add('opacity-0');
+      modalCard.classList.remove('scale-100');
+      modalCard.classList.add('scale-95');
+      setTimeout(() => {
+        modal.classList.add('hidden');
+        modal.classList.remove('flex');
+      }, 280);
+    }
+
+    closeModalBtn.addEventListener('click', closeProjectModal);
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) closeProjectModal();
+    });
+
+    // Toast Notification Helper (Replaces alert)
+    function showToast(message) {
+      const container = document.getElementById('toast-container');
+      const toast = document.createElement('div');
+      toast.className = 'bg-slate-900 text-white text-xs sm:text-sm font-medium px-4 py-3 rounded-xl shadow-lg border border-slate-700 flex items-center gap-2.5 transition-all';
+      toast.style.animation = 'fadeSlideUp 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards';
+      toast.innerHTML = `<i class="fa-solid fa-circle-check text-emerald-400"></i><span>${message}</span>`;
+      container.appendChild(toast);
+      setTimeout(() => {
+        toast.style.opacity = '0';
+        toast.style.transform = 'translateY(8px)';
+        setTimeout(() => toast.remove(), 300);
+      }, 3200);
+    }
+
+    // Clipboard Copy Helper (Uses execCommand for iframe compatibility)
+    function copyText(text, label) {
+      const tempInput = document.createElement('textarea');
+      tempInput.value = text;
+      document.body.appendChild(tempInput);
+      tempInput.select();
+      try {
+        document.execCommand('copy');
+        showToast(`${label} copied: ${text}`);
+      } catch (err) {
+        showToast(`Could not copy ${label}`);
+      }
+      document.body.removeChild(tempInput);
+    }
+
+    // Mobile Menu Toggle with Smooth Accordion Transition
+    const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+    const mobileMenu = document.getElementById('mobile-menu');
+    const mobileMenuIcon = document.getElementById('mobile-menu-icon');
+    let mobileMenuOpen = false;
+
+    function toggleMobileMenu(forceClose = false) {
+      if (forceClose || mobileMenuOpen) {
+        mobileMenu.style.maxHeight = '0px';
+        mobileMenu.classList.add('opacity-0');
+        mobileMenuIcon.classList.remove('fa-xmark', 'rotate-90');
+        mobileMenuIcon.classList.add('fa-bars');
+        mobileMenuOpen = false;
+      } else {
+        mobileMenu.style.maxHeight = mobileMenu.scrollHeight + 'px';
+        mobileMenu.classList.remove('opacity-0');
+        mobileMenuIcon.classList.remove('fa-bars');
+        mobileMenuIcon.classList.add('fa-xmark', 'rotate-90');
+        mobileMenuOpen = true;
+      }
+    }
+
+    mobileMenuBtn.addEventListener('click', () => toggleMobileMenu());
+
+    document.querySelectorAll('.mobile-link').forEach(link => {
+      link.addEventListener('click', () => toggleMobileMenu(true));
+    });
+
+    // Contact Form Submission (Email & WhatsApp)
+    const contactForm = document.getElementById('contact-form');
+    const sendWhatsappBtn = document.getElementById('send-whatsapp-btn');
+
+    contactForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const name = document.getElementById('sender-name').value.trim();
+      const email = document.getElementById('sender-email').value.trim();
+      const subject = document.getElementById('project-subject').value;
+      const message = document.getElementById('sender-message').value.trim();
+
+      const mailtoLink = `mailto:adisanureni2023@gmail.com?subject=${encodeURIComponent(subject + ' - from ' + name)}&body=${encodeURIComponent(`Name: ${name}\nEmail: ${email}\n\nMessage:\n${message}`)}`;
+      showToast('Opening your email client to send message...');
+      window.location.href = mailtoLink;
+    });
+
+    sendWhatsappBtn.addEventListener('click', () => {
+      const name = document.getElementById('sender-name').value.trim() || 'A Visitor';
+      const subject = document.getElementById('project-subject').value;
+      const message = document.getElementById('sender-message').value.trim() || 'Hello Dev Aditech, I would like to connect regarding a project.';
+
+      const whatsappText = `Hello Adisa (Dev Aditech), my name is ${name}.\n*Inquiry:* ${subject}\n*Message:* ${message}`;
+      const waUrl = `https://wa.me/2348137565810?text=${encodeURIComponent(whatsappText)}`;
+      showToast('Redirecting to WhatsApp...');
+      window.open(waUrl, '_blank', 'noopener,noreferrer');
+    });
+
+    // Scroll Reveal Intersection Observer
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
+      });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.reveal-section').forEach(section => {
+      observer.observe(section);
+    });
+  </script>
+</body>
+</html>

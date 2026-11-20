@@ -10,6 +10,8 @@ import Projects from './components/Projects'
 import Services from './components/Services'
 import Experience from './components/Experience'
 import Process from './components/Process'
+import Learning from './components/Learning'
+import FAQ from './components/FAQ'
 import WhyWorkWithMe from './components/WhyWorkWithMe'
 import Testimonials from './components/Testimonials'
 import Contact from './components/Contact'
@@ -54,13 +56,15 @@ function App() {
       <Hero />
       <Stats />
       <About />
+      <Services />
       <Skills />
       <Projects />
-      <Services />
       <Experience />
       <Process />
+      <Learning />
       <WhyWorkWithMe />
       <Testimonials />
+      <FAQ />
       <Contact />
       <Footer />
       <BackToTop />

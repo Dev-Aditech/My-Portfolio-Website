@@ -6,9 +6,10 @@ const COLLECTION = 'portfolioProjects'
 
 // Tailwind needs full class names in source, so the presets are spelled out here.
 export const CATEGORY_OPTIONS = [
-  { key: 'firebase', label: 'Firebase / BaaS' },
-  { key: 'ecommerce', label: 'E-Commerce & Apps' },
-  { key: 'frontend', label: 'Frontend / UI' },
+  { key: 'fullstack', label: 'Full Stack' },
+  { key: 'frontend', label: 'Frontend' },
+  { key: 'backend', label: 'Backend' },
+  { key: 'mobile', label: 'Mobile' },
 ]
 
 export const COLOR_OPTIONS = [
